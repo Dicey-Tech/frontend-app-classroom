@@ -6,20 +6,27 @@ import {
 import { AppProvider, ErrorPage } from '@edx/frontend-platform/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import { Route, Switch } from 'react-router-dom';
 import Header, { messages as headerMessages } from '@edx/frontend-component-header';
 import Footer, { messages as footerMessages } from '@edx/frontend-component-footer';
+import store from './app/store';
 
 import appMessages from './i18n';
-import ExamplePage from './example/ExamplePage';
+// import ExamplePage from './example/ExamplePage';
+import ClassroomContainer from './containers/ClassroomContainer';
+import NewClassroomContainer from './containers/NewClassroomContainer';
 
 import './index.scss';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
-    <AppProvider>
+    <AppProvider store={store}>
       <Header />
-      <ExamplePage />
+      <Switch>
+        <Route path="/:classroomId" exact component={ClassroomContainer} />
+        <Route path="/" exact component={NewClassroomContainer} />
+        <Route render={() => <h1>No such page</h1>} />
+      </Switch>
       <Footer />
     </AppProvider>,
     document.getElementById('root'),

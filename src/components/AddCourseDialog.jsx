@@ -1,0 +1,72 @@
+import {
+  Button, CardGrid, ModalDialog, Scrollable, Card,
+} from '@edx/paragon';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import ImageURL from '../assets/GenericCourseImage.png';
+import LmsApiService from '../app/services/LmsApiService';
+import { addCourseToClassroom } from '../features/courses/coursesSlice';
+
+async function fetchAllCourses() {
+  const result = await LmsApiService.fetchAllCourses();
+  return result;
+}
+
+const AddCourseDialog = ({ isOpen, close }) => {
+  const Uuid = useSelector(store => store.classroom.classroomId);
+  const courses = useSelector(store => store.courses.courses);
+  const dispatch = useDispatch();
+
+  const [courseList, setCourseList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isOpen) {
+      const doCall = () => fetchAllCourses().then(result => result.data.courses);
+
+      setIsLoading(true);
+      doCall().then(result => {
+        setIsLoading(false);
+        setCourseList(result);
+      });
+    }
+  }, [isOpen]);
+
+  const addCourse = (courseId) => {
+    dispatch(addCourseToClassroom({ Uuid, courseId }));
+    // recalculate the cards?
+  };
+
+  const courseListCards = courseList.filter((e) => courses
+    .findIndex((c) => c.courseId === e.courseId) < 0)
+    .map((element) => (
+      <Card id={element.courseId} key={element.courseId}>
+        <Card.Img variant="top" src={ImageURL} />
+        <Card.Body>
+          <Card.Title>{element.title}</Card.Title>
+          <Card.Text>{element.description}</Card.Text>
+          <Button variant="primary" onClick={() => addCourse(element.courseId)}>Add Course</Button>
+        </Card.Body>
+      </Card>
+    ));
+  return (
+    <ModalDialog isOpen={isOpen} onClose={close} hasCloseButton title="Add A Course">
+      <ModalDialog.Header>
+        Add A Course
+      </ModalDialog.Header>
+      <ModalDialog.Body>
+        {isLoading ? <h2>Loading...</h2>
+          : (
+            <Scrollable>
+              <CardGrid>
+                {courseListCards}
+              </CardGrid>
+            </Scrollable>
+          )}
+      </ModalDialog.Body>
+    </ModalDialog>
+  );
+};
+
+export default AddCourseDialog;
