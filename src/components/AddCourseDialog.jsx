@@ -1,9 +1,5 @@
 import {
-<<<<<<< HEAD
-  Button, CardGrid, ModalDialog, Scrollable, Card,
-=======
   Button, CardGrid, ModalDialog, Card, Container,
->>>>>>> develop-a
 } from '@edx/paragon';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
