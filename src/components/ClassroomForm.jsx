@@ -27,7 +27,7 @@ const ClassroomForm = (props) => {
           </Form.Group>
         </Form.Row>
         <Form.Row>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" className="mr-2">
             Submit
           </Button>
           <Button variant="secondary" type="reset">

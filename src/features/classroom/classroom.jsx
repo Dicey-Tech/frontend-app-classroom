@@ -42,7 +42,9 @@ const Classroom = (props) => {
           </Col>
           <Col sm={0} md={1} />
           <Col>
-            <Courses />
+            <Container>
+              <Courses />
+            </Container>
           </Col>
         </Row>
       </Container>

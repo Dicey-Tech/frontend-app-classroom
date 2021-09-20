@@ -1,5 +1,7 @@
 import React from 'react';
-import { Scrollable, useToggle, Button } from '@edx/paragon';
+import {
+  Scrollable, useToggle, Button, Row, Col,
+} from '@edx/paragon';
 import { useSelector } from 'react-redux';
 import CourseCard from '../../components/CourseCard';
 import imageURL from '../../assets/GenericCourseImage.png';
@@ -31,11 +33,19 @@ const Courses = () => {
   ));
   return (
     <>
-      <Button onClick={open}>Add Course</Button>
+      <div className="d-flex justify-content-end mb-2">
+        <div>
+          <Button onClick={open}>Add Course</Button>
+        </div>
+      </div>
       <AddCourseDialog isOpen={isOpen} close={close} />
-      <Scrollable>
-        {courseCards}
-      </Scrollable>
+      <Row>
+        <Scrollable>
+          {courseCards.map(element => (
+            <Row className="mb-2"><Col>{element}</Col></Row>
+          ))}
+        </Scrollable>
+      </Row>
     </>
   );
 };

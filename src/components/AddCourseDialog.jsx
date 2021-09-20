@@ -1,5 +1,9 @@
 import {
+<<<<<<< HEAD
   Button, CardGrid, ModalDialog, Scrollable, Card,
+=======
+  Button, CardGrid, ModalDialog, Card, Container,
+>>>>>>> develop-a
 } from '@edx/paragon';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,7 +45,7 @@ const AddCourseDialog = ({ isOpen, close }) => {
   const courseListCards = courseList.filter((e) => courses
     .findIndex((c) => c.courseId === e.courseId) < 0)
     .map((element) => (
-      <Card id={element.courseId} key={element.courseId}>
+      <Card id={element.courseId} key={element.courseId} style={{ width: '15em' }}>
         <Card.Img variant="top" src={ImageURL} />
         <Card.Body>
           <Card.Title>{element.title}</Card.Title>
@@ -51,19 +55,20 @@ const AddCourseDialog = ({ isOpen, close }) => {
       </Card>
     ));
   return (
-    <ModalDialog isOpen={isOpen} onClose={close} hasCloseButton title="Add A Course">
+    <ModalDialog isOpen={isOpen} onClose={close} hasCloseButton title="Add A Course" size="lg">
       <ModalDialog.Header>
         Add A Course
       </ModalDialog.Header>
       <ModalDialog.Body>
-        {isLoading ? <h2>Loading...</h2>
-          : (
-            <Scrollable>
-              <CardGrid>
-                {courseListCards}
-              </CardGrid>
-            </Scrollable>
+        <Container>
+          {isLoading && (<div className="text-center"><h2>Loading...</h2></div>)}
+          {!isLoading && courseListCards.length === 0 && (<div className="text-center"><h2>No courses available</h2></div>)}
+          {!isLoading && courseListCards.length > 0 && (
+            <CardGrid columnSizes={{ sm: 10, lg: 4, xl: 4 }} style={{ width: '100%' }}>
+              {courseListCards}
+            </CardGrid>
           )}
+        </Container>
       </ModalDialog.Body>
     </ModalDialog>
   );
