@@ -3,15 +3,14 @@ import reducer, { fetchClassroomByUuid, updateClassroomDetails } from './classro
 
 const initialState = {
   title: null,
-  description: null,
   active: null,
   pending: false,
+  status: 'initial',
 };
 
 const newClassroomState = {
   ...initialState,
   title: 'a new classroom',
-  description: 'a new classroom description here',
   active: true,
   pending: false,
   classroomId: 1,
@@ -23,10 +22,9 @@ describe('fetch and update existing classroom', () => {
     expect(reducer(undefined, {
       type: fetchClassroomByUuid.fulfilled,
       payload: {
-        title: 'a new classroom',
-        description: 'a new classroom description here',
+        name: 'a new classroom',
         active: true,
-        classroomId: 1,
+        uuid: 1,
         status: 'success',
       },
     })).toEqual(newClassroomState);
@@ -35,7 +33,6 @@ describe('fetch and update existing classroom', () => {
     const updatedClassroomState = {
       ...newClassroomState,
       title: 'updated classroom title',
-      description: 'a update clasroom description',
     };
     expect(reducer(newClassroomState, {
       type: updateClassroomDetails.fulfilled,

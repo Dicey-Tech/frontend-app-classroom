@@ -2,10 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ClassroomApiService from '../../app/services/ClassroomApiService';
 import { fetchCoursesForClassroom } from '../courses/coursesSlice';
 import { fetchStudentsForClassroom } from '../enrollment/enrollmentSlice';
+import { fetchEnterpriseFromUuid } from '../enterprise/enterpriseSlice';
 
 const initialState = {
   title: null,
-  description: null,
   active: null,
   classroomId: null,
   pending: false,
@@ -37,6 +37,7 @@ export const fetchClassroomByUuid = createAsyncThunk('classroom/fetchClassroom',
   await dispatch(fetchCoursesForClassroom(classroomId));
   await dispatch(fetchStudentsForClassroom(classroomId));
   console.log(response, 'dispatch response');
+  dispatch(fetchEnterpriseFromUuid(response.data.school));
   return response.data;
 });
 
@@ -62,10 +63,10 @@ const classroomSlice = createSlice({
     })
       .addCase(fetchClassroomByUuid.fulfilled, (state, action) => {
         const classroom = action.payload;
-        state.title = classroom.title;
-        state.description = classroom.description;
+        state.title = classroom.name;
+        // state.description = classroom.description;
         state.active = classroom.active;
-        state.classroomId = classroom.classroomId;
+        state.classroomId = classroom.uuid;
         state.pending = false;
         state.status = 'success';
       })
@@ -82,7 +83,6 @@ const classroomSlice = createSlice({
         const classroomDetails = action.payload;
         state.pending = false;
         state.title = classroomDetails.title;
-        state.description = classroomDetails.description;
         state.status = 'success';
       });
   },

@@ -9,6 +9,7 @@ import Courses from '../courses/courses';
 import { fetchClassroomByUuid } from './classroomSlice';
 
 const Classroom = (props) => {
+  const { slug } = props;
   const classroomIdParam = props.classroomId;
 
   // const classroomId = useSelector(state => state.classroom.classroomId);
@@ -23,28 +24,26 @@ const Classroom = (props) => {
     if (classroomStatus === 'initial') { dispatch(fetchClassroomByUuid(classroomIdParam)); }
   }, [classroomStatus, classroomIdParam, dispatch]);
 
+  const newClassroomLink = `/${slug}`;
   return (
     <>
       <ClassroomHeader title={classroomTitle} />
       <Navbar bg="light" expand="lg" className="mb-3">
         <Nav>
           <Nav.Item>
-            <Nav.Link eventKey="1" href="/">
+            <Nav.Link eventKey="1" href={newClassroomLink}>
               New Classroom
             </Nav.Link>
           </Nav.Item>
         </Nav>
       </Navbar>
       <Container>
-        <Row>
-          <Col sm={3} md={4}>
+        <Row className="d-flex justify-content-between">
+          <Col sm={3} md={4} className="flex-shrink-1">
             <Enrollment />
           </Col>
-          <Col sm={0} md={1} />
-          <Col>
-            <Container>
-              <Courses />
-            </Container>
+          <Col sm={5} md={7}>
+            <Courses />
           </Col>
         </Row>
       </Container>

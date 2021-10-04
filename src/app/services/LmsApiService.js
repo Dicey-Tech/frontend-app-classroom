@@ -1,44 +1,7 @@
 /* eslint-disable eqeqeq */
-
-const students = [
-  {
-    studentId: 1,
-    firstName: 'john',
-    lastName: 'smith',
-    email: 'john1@edx.com',
-  },
-  {
-    studentId: 2,
-    firstName: 'johnnny',
-    lastName: 'smithson',
-    email: 'john2@edx.com',
-  },
-  {
-    studentId: 3,
-    firstName: 'johnaton',
-    lastName: 'smithaton',
-    email: 'john3@edx.com',
-  },
-  {
-    studentId: 4,
-    firstName: 'johnakton',
-    lastName: 'smithakton',
-    email: 'john4@edx.com',
-  },
-  {
-    studentId: 5,
-    firstName: 'johnism',
-    lastName: 'smithism',
-    email: 'john6@edx.com',
-  },
-  {
-    studentId: 6,
-    firstName: 'johnlackton',
-    lastName: 'smithakton',
-    email: 'john7@edx.com',
-  },
-
-];
+import qs from 'query-string';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import configuration from '../../config';
 
 const courseList = [
   {
@@ -81,28 +44,61 @@ const courseList = [
 ];
 
 class LmsApiService {
-  static async fetchStudentInfo(studentId) {
-    const student = students.find(element => element.studentId == studentId);
+  static apiClient = getAuthenticatedHttpClient;
 
-    return {
-      data: student,
-    };
+  static baseUrl = configuration.LMS_BASE_URL;
+
+  static async fetchStudentInfoByEmail(email) {
+    const requestUrl = `${LmsApiService.baseUrl}/api/user/v1/accounts?email=${email}`;
+    return LmsApiService.apiClient().get(requestUrl);
   }
 
   static async fetchCourseInfo(courseId) {
-    const course = courseList.find(element => element.courseId == courseId);
-    return {
-      data: course,
-    };
+    const requestUrl = `${LmsApiService.baseUrl}/api/courses/v1/courses/${courseId}`;
+    return LmsApiService.apiClient().get(requestUrl);
   }
 
-  static async fetchAllCourses() {
+  /* says "all" but there could be thousands of courses so I force a page */
+  /* eslint-disable */
+  static async fetchAllCourses(page, pageSize) {
+    const queryParams = {
+      page,
+      page_size: pageSize,
+    };
+    // const requestUrl = `${LmsApiService.baseUrl}/api/courses/v1/courses/?${qs.stringify(queryParams)}`;
+
     return {
       data: {
+        page: 1,
+        pageCount: 1,
+        pageSize: 20,
         courseCount: courseList.length,
         courses: courseList,
       },
     };
+  }
+  /* eslint-enable */
+
+  static async fetchEnterpriseQuery(queryParams) {
+    const requestUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/?${qs.stringify(queryParams)}`;
+    return LmsApiService.apiClient().get(requestUrl);
+  }
+
+  static async fetchEnterpriseByUuid(uuid) {
+    const queryParams = {
+      page: 1,
+      uuid,
+    };
+    return this.fetchEnterpriseQuery(queryParams);
+  }
+
+  static async fetchEnterpriseBySlug(slug) {
+    const queryParams = {
+      page: 1,
+      slug,
+    };
+    const requestUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/?${qs.stringify(queryParams)}`;
+    return LmsApiService.apiClient().get(requestUrl);
   }
 }
 

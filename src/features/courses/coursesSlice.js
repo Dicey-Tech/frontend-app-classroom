@@ -11,25 +11,28 @@ const initialState = {
 export const fetchCoursesForClassroom = createAsyncThunk('courses/fetchCourses', async (classroomId) => {
   const response = await ClassroomApiService.fetchClassroomCourses(classroomId);
   console.log(response.data, 'courses response');
+  const results = {
+    courses: [...response.data.results],
+  };
   // have to make a request to get the classroom details for each course
   try {
     /* eslint-disable no-restricted-syntax  */
     /* eslint-disable no-await-in-loop */
-    for (const courseData of response.data.courses) {
+    for (const courseData of results.courses) {
       console.log(courseData, 'fetching for');
-      const courseInfo = await LmsApiService.fetchCourseInfo(courseData.courseId);
+      const courseInfo = await LmsApiService.fetchCourseInfo(courseData.course_id);
       console.log(courseInfo, 'course data recieved');
-      courseData.title = courseInfo.data.title;
-      courseData.description = courseInfo.data.description;
-      courseData.imageURL = courseInfo.data.imageURL;
+      courseData.title = courseInfo.data.name;
+      courseData.description = courseInfo.data.short_description;
+      courseData.imageURL = courseInfo.data.media.image.small;
     }
     /* eslint-enable no-await-in-loop */
     /* eslint-enable no-restricted-syntax  */
   } catch (error) {
     /* an empty catch block */
   }
-  console.log(response.data, 'full course data');
-  return response.data;
+  console.log(results, 'full course data');
+  return results;
 });
 
 export const addCourseToClassroom = createAsyncThunk('courses/addCourse', async ({ Uuid, courseId }) => {

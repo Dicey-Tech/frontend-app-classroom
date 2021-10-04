@@ -14,25 +14,31 @@ export const fetchStudentsForClassroom = createAsyncThunk('enrollment/fetchStude
   // from LMS
   const response = await ClassroomApiService.fetchClassroomEnrollment(classroomId);
   console.log(response.data, 'enrollment');
-  try {
-    /* eslint-disable no-restricted-syntax */
-    /* eslint-disable no-await-in-loop */
-    for (const studentData of response.data.enrollment) {
-      console.log(studentData, 'fetching data for');
-      const studentInfo = await LmsApiService.fetchStudentInfo(studentData.studentId);
-      console.log(studentInfo, 'recieved student Info');
-      studentData.firstName = studentInfo.data.firstName;
-      studentData.lastName = studentInfo.data.lastName;
-      studentData.email = studentInfo.data.email;
+  const results = {
+    enrollment: [...response.data.results],
+  };
+  /* eslint-disable no-restricted-syntax */
+  for (const student of results.enrollment) {
+    student.studentId = student.pk;
+    student.email = student.user_id;
+    try {
+      /* eslint-disable no-await-in-loop */
+      // for (const studentData of response.data.enrollment) {
+      console.log(student, 'fetching data for');
+      const studentInfo = await LmsApiService.fetchStudentInfoByEmail(student.email);
+      console.log(response, 'recieved student Info');
+      student.imageUrl = studentInfo.data[0].profile_image.image_url_small;
+      /* eslint-enable no-await-in-loop */
+    } catch (error) {
+      /* an empty catch block */
     }
-    /* eslint-enable no-await-in-loop */
-    /* eslint-eable no-restricted-syntax */
-  } catch (error) {
-    /* an empty catch block */
   }
-  return response.data;
+  /* eslint-eable no-restricted-syntax */
+  return results;
 });
-export const addStudentToClassroom = createAsyncThunk('enrollment/addStudent', () => {
+// This is the bulk student load. expects a newline (\r\n) between student emails. Check for fail
+// TODO: not actually sure if this needed!!
+export const addStudentToClassroom = createAsyncThunk('enrollment/addsStudent', () => {
   // fetch student info from LMS here and add to store
 });
 export const toggleStudentStatusInClassroom = createAsyncThunk('enrollment/toggleStudentStatus', () => {
@@ -55,11 +61,9 @@ const enrollmentSlice = createSlice(
             state.students.push(
               {
                 studentId: student.studentId,
-                firstName: student.firstName,
-                lastName: student.lastName,
+                imageUrl: student.imageUrl,
+                staff: student.staff,
                 email: student.email,
-                imageURL: student.imageURL,
-                active: student.active,
               },
             );
           });
@@ -72,23 +76,22 @@ const enrollmentSlice = createSlice(
           const newStudent = action.payload;
           state.students.push({
             studentId: newStudent.studentId,
-            firstName: newStudent.firstName,
-            lastName: newStudent.lastName,
             email: newStudent.email,
-            imageURL: newStudent.imageURL,
-            active: newStudent.active,
+            imageUrl: newStudent.imageUrl,
+            staff: newStudent.staff,
           });
-        })
-        .addCase(toggleStudentStatusInClassroom.fulfilled, (state, action) => {
-          state.startFetching = false;
-          state.status = 'success';
-          const studentToToggle = state.students.find(x => x.studentId === action.payload.studentId);
-          if (studentToToggle) {
-            studentToToggle.active = !studentToToggle.active;
-          } else {
-            // some type of error
-          }
         });
+      /* obsolete
+      .addCase(toggleStudentStatusInClassroom.fulfilled, (state, action) => {
+        state.startFetching = false;
+        state.status = 'success';
+        const studentToToggle = state.students.find(x => x.studentId === action.payload.studentId);
+        if (studentToToggle) {
+          studentToToggle.active = !studentToToggle.active;
+        } else {
+          // some type of error
+        }
+      }); */
     },
 
   },

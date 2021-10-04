@@ -1,4 +1,4 @@
-import reducer, { fetchStudentsForClassroom, addStudentToClassroom, toggleStudentStatusInClassroom } from './enrollmentSlice';
+import reducer, { fetchStudentsForClassroom, addStudentToClassroom } from './enrollmentSlice';
 
 const initialState = {
   students: [],
@@ -12,19 +12,15 @@ const resultTestingState = {
   students: [
     {
       studentId: 0,
-      firstName: 'ted',
-      lastName: 'the man',
       email: 'user@edx.org',
-      imageURL: 'image1.jpg',
-      active: true,
+      imageUrl: 'image1.jpg',
+      staff: true,
     },
     {
       studentId: 1,
-      firstName: 'frank',
-      lastName: 'drebben',
       email: 'dave@edx.org',
-      imageURL: 'image2.jpg',
-      active: true,
+      imageUrl: 'image2.jpg',
+      staff: false,
     },
   ],
 };
@@ -37,19 +33,15 @@ it('fetches the students in the class', () => {
     enrollment: [
       {
         studentId: 0,
-        firstName: 'ted',
-        lastName: 'the man',
         email: 'user@edx.org',
-        imageURL: 'image1.jpg',
-        active: true,
+        imageUrl: 'image1.jpg',
+        staff: true,
       },
       {
         studentId: 1,
-        firstName: 'frank',
-        lastName: 'drebben',
         email: 'dave@edx.org',
-        imageURL: 'image2.jpg',
-        active: true,
+        imageUrl: 'image2.jpg',
+        staff: false,
       },
     ],
   };
@@ -66,11 +58,9 @@ it('adds a new student to the class', () => {
   };
   const newStudent = {
     studentId: 3,
-    firstName: 'newbie',
-    lastName: 'beenThere',
     email: 'anon@edx.org',
-    active: true,
-    imageURL: undefined,
+    staff: false,
+    imageUrl: undefined,
   };
   studentAddResultState.students.push(newStudent);
   expect(reducer(resultTestingState, {
@@ -78,6 +68,7 @@ it('adds a new student to the class', () => {
     payload: newStudent,
   })).toEqual(studentAddResultState);
 });
+/* Enrollment cannot be amended so remove this test
 it('deactivates a student', () => {
   const studentDeactivateResultState = {
     ...resultTestingState,
@@ -97,4 +88,5 @@ it('deactivates a student', () => {
     type: toggleStudentStatusInClassroom.fulfilled,
     payload: { studentId: 0 },
   })).toEqual(studentDeactivateResultState);
-});
+
+}); */

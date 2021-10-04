@@ -4,7 +4,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ImageURL from '../assets/GenericCourseImage.png';
+import ImageURL from '../assets/GenericCourseImage.svg';
 import LmsApiService from '../app/services/LmsApiService';
 import { addCourseToClassroom } from '../features/courses/coursesSlice';
 

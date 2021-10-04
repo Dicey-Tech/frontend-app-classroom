@@ -1,41 +1,9 @@
+// import qs from 'query-string';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import configuration from '../../config';
+
 /* this file is just scaffolding right just for testing */
 /* eslint-disable eqeqeq */
-const classrooms = [
-  {
-    title: 'some hard-coded classroom',
-    description: 'lorem ipsum dolat place',
-    active: true,
-    classroomId: 1,
-  },
-];
-
-const enrollment = [
-  {
-    studentId: 1,
-    active: true,
-  },
-  {
-    studentId: 2,
-    active: true,
-  },
-  {
-    studentId: 3,
-    active: true,
-  },
-  {
-    studentId: 4,
-    active: true,
-  },
-  {
-    studentId: 5,
-    active: true,
-  },
-  {
-    studentId: 6,
-    active: true,
-  },
-
-];
 
 const courses = [
   {
@@ -53,28 +21,27 @@ const courses = [
 ];
 
 class ClassroomApiService {
-  static async fetchClassroomByUuid(Uuid) {
-    // await sleep(500)
-    console.log(Uuid, 'fetching');
-    const classroom = classrooms.find(e => e.classroomId == Uuid);
-    return {
-      data: classroom,
-    };
+  static apiClient = getAuthenticatedHttpClient;
+
+  static baseUrl = configuration.CLASSROOM_BASE_URL;
+
+  static async fetchClassroomByUuid(uuid) {
+    console.log(uuid, 'fetching');
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}`;
+
+    return ClassroomApiService.apiClient().get(requestUrl);
   }
 
-  static async createNewClassroom({ title }) {
+  static async createNewClassroom({ title, enterpriseUuid }) {
     console.log(title, 'creating');
-    const newclassroomId = Math.max(...classrooms.map((e) => e.classroomId)) + 1;
-    const newClassroom = {
-      title,
-      description: 'lorem ipsum dolat place',
+    const formData = {
+      name: title,
       active: true,
-      classroomId: newclassroomId,
+      school: enterpriseUuid,
     };
-    classrooms.push(newClassroom);
-    return {
-      data: newClassroom,
-    };
+
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/`;
+    return ClassroomApiService.apiClient().post(requestUrl, formData);
   }
 
   static async updateClassroomByUuid(Uuid, data) {
@@ -89,26 +56,22 @@ class ClassroomApiService {
   }
 
   /* gets just the userIds in the classroom, rest of information comes from the lms */
-  static async fetchClassroomEnrollment(/* Uuid */) {
-    // await sleep(500)
-    return {
-      data: {
-        enrollmentCount: enrollment.length,
-        enrollment,
-      },
-    };
+  static async fetchClassroomEnrollment(uuid) {
+    const page = 1; /* TODO need to store and return the paging information */
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/enrollments/?page=${page}`;
+    return ClassroomApiService.apiClient().get(requestUrl);
   }
 
   /* TODO:  just gets the course UUIDs, rest of it comes from LMS, UUID is enterprise UUID which needed */
-  static async fetchClassroomCourses(/* Uuid */) {
-    // await sleep(500)
-    return {
-      data: {
-        courseCount: courses.length,
-        courses,
+  static async fetchClassroomCourses(uuid) {
+    const page = 1; /* TODO add param */
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/assignments?page=${page}`;
+    return ClassroomApiService.apiClient().get(requestUrl);
+  }
 
-      },
-    };
+  /* This take a text string which is expected be email address separated by \r\n */
+  static async addBulkEnrollmentToClassroom(courseId, enrollmentText) {
+    return { courseId, enrollmentText };
   }
 
   static async addCourseToClassroom(_, courseId) {

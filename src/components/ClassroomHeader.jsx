@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from '@edx/paragon';
-import imageURL from '../assets/GenericBackgroundImage.jpg';
+import imageURL from '../assets/GenericBackgroundImage.svg';
 
 const ClassroomHeader = (props) => (
   <div style={{ position: 'relative' }}>
@@ -12,7 +12,7 @@ const ClassroomHeader = (props) => (
       position: 'absolute', top: '50%', left: '10%',
     }}
     >
-      <h2 style={{ color: 'white' }}>{props.title}</h2>
+      <h2>{props.title}</h2>
     </div>
   </div>
 );

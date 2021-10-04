@@ -23,8 +23,8 @@ subscribe(APP_READY, () => {
     <AppProvider store={store}>
       <Header />
       <Switch>
-        <Route path="/:classroomId" exact component={ClassroomContainer} />
-        <Route path="/" exact component={NewClassroomContainer} />
+        <Route path="/:slug/:classroomId/" exact component={ClassroomContainer} />
+        <Route path="/:slug/" exact component={NewClassroomContainer} />
         <Route render={() => <h1>No such page</h1>} />
       </Switch>
       <Footer />
