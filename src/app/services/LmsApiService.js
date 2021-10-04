@@ -1,5 +1,4 @@
 /* eslint-disable eqeqeq */
-import qs from 'query-string';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import configuration from '../../config';
 
@@ -80,7 +79,7 @@ class LmsApiService {
   /* eslint-enable */
 
   static async fetchEnterpriseQuery(queryParams) {
-    const requestUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/?${qs.stringify(queryParams)}`;
+    const requestUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/?page=${queryParams.page}&uuid=${queryParams.uuid}`;
     return LmsApiService.apiClient().get(requestUrl);
   }
 
@@ -93,11 +92,7 @@ class LmsApiService {
   }
 
   static async fetchEnterpriseBySlug(slug) {
-    const queryParams = {
-      page: 1,
-      slug,
-    };
-    const requestUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/?${qs.stringify(queryParams)}`;
+    const requestUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/?page=1&slug=${slug}`;
     return LmsApiService.apiClient().get(requestUrl);
   }
 }
