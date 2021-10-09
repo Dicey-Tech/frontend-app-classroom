@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import {
   Nav, Container, Col, Row, Navbar,
 } from '@edx/paragon';
+import {
+  getConfig,
+} from '@edx/frontend-platform';
 import { useDispatch, useSelector } from 'react-redux';
 import ClassroomHeader from '../../components/ClassroomHeader';
 import Enrollment from '../enrollment/enrollment';
@@ -24,7 +27,7 @@ const Classroom = (props) => {
     if (classroomStatus === 'initial') { dispatch(fetchClassroomByUuid(classroomIdParam)); }
   }, [classroomStatus, classroomIdParam, dispatch]);
 
-  const newClassroomLink = `/${slug}`;
+  const newClassroomLink = `${getConfig().PUBLIC_PATH}/${slug}`;
   return (
     <>
       <ClassroomHeader title={classroomTitle} />
