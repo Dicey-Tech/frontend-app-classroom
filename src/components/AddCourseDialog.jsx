@@ -5,16 +5,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ImageURL from '../assets/GenericCourseImage.svg';
-import LmsApiService from '../app/services/LmsApiService';
 import { addCourseToClassroom } from '../features/courses/coursesSlice';
+import ClassroomApiService from '../app/services/ClassroomApiService';
 
-async function fetchAllCourses() {
-  const result = await LmsApiService.fetchAllCourses();
+async function fetchAllCourses(classroomId) {
+  const result = await ClassroomApiService.getAvailableCoursesForClassroom(classroomId);
+  console.log(result, 'get list of all courses');
   return result;
 }
 
 const AddCourseDialog = ({ isOpen, close }) => {
-  const Uuid = useSelector(store => store.classroom.classroomId);
+  const classroomId = useSelector(store => store.classroom.classroomId);
   const courses = useSelector(store => store.courses.courses);
   const dispatch = useDispatch();
 
@@ -23,10 +24,10 @@ const AddCourseDialog = ({ isOpen, close }) => {
 
   useEffect(() => {
     if (isOpen) {
-      const doCall = () => fetchAllCourses().then(result => result.data.courses);
+      const doCall = (classroomUuid) => fetchAllCourses(classroomUuid).then(result => result.data);
 
       setIsLoading(true);
-      doCall().then(result => {
+      doCall(classroomId).then(result => {
         setIsLoading(false);
         setCourseList(result);
       });
@@ -34,7 +35,7 @@ const AddCourseDialog = ({ isOpen, close }) => {
   }, [isOpen]);
 
   const addCourse = (courseId) => {
-    dispatch(addCourseToClassroom({ Uuid, courseId }));
+    dispatch(addCourseToClassroom({ classroomId, courseId }));
     // recalculate the cards?
   };
 

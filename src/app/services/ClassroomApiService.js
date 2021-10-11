@@ -70,8 +70,17 @@ class ClassroomApiService {
   }
 
   /* This take a text string which is expected be email address separated by \r\n */
-  static async addBulkEnrollmentToClassroom(courseId, enrollmentText) {
-    return { courseId, enrollmentText };
+  static async addBulkEnrollmentToClassroom(uuid, enrollmentText) {
+    const formData = {
+      identifiers: enrollmentText,
+    };
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/enroll/`;
+    return ClassroomApiService.apiClient().post(requestUrl, formData);
+  }
+
+  static async getAvailableCoursesForClassroom(uuid) {
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/courses/`;
+    return ClassroomApiService.apiClient().get(requestUrl);
   }
 
   static async addCourseToClassroom(_, courseId) {
