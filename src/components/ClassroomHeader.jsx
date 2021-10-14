@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from '@edx/paragon';
-import imageURL from '../assets/GenericBackgroundImage.svg';
+import imageURL from '../assets/ClassroomCover.svg';
 
 const ClassroomHeader = (props) => (
   <div style={{ position: 'relative' }}>
