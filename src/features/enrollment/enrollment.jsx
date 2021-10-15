@@ -20,15 +20,13 @@ const Enrollment = () => {
         </div>
       </Card.Header>
       <Card.Body>
-        <ul style={{ listStyleType: 'none' }}>
-          {enrollmentStudents.map((element) => (
-            <li key={element.studentId}>
-              <AvatarButton size="md" src={element.imageUrl}>
-                {element.email}
-              </AvatarButton>
-            </li>
-          ))}
-        </ul>
+        {enrollmentStudents.map((element) => (
+          <div key={element.studentId}>
+            <AvatarButton size="md" src={element.imageUrl}>
+              {element.email}
+            </AvatarButton>
+          </div>
+        ))}
       </Card.Body>
     </Card>
   );
