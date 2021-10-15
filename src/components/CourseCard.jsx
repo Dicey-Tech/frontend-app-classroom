@@ -3,23 +3,23 @@ import {
   Card, Image, Button, Container,
 } from '@edx/paragon';
 
-/* className="row-cols-3" */
+/* TODO replace this with out own layout */
 const CourseCard = (props) => (
-  <Card>
+  <Card className="shadow-sm course-card">
     <Card.Body>
-      <Container>
+      <Container className="course-content">
         <div className="d-flex">
           <div>
-            <Image src={props.imageURL} fluid />
+            <Image className="course-image" src={props.imageURL} fluid />
           </div>
-          <div className="flex-grow-1 w-100">
+          <div className="course-description flex-grow-1 w-100 m-2">
             <h3>{props.title}</h3><br />
             <p>{props.description}</p>
           </div>
-          <div className="flex-shrink-1 justify-content-end">
+          <div className="course-actions flex-shrink-1 justify-content-end">
             <div className="flex-column ">
-              <div className="m-1"><Button>Grades</Button></div>
-              <div className="m-1"><Button>Archive</Button></div>
+              <div className="m-1"><Button variant="primary">Grades</Button></div>
+              <div className="m-1"><Button variant="secondary">Archive</Button></div>
             </div>
           </div>
         </div>

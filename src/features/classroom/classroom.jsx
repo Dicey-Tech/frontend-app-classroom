@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react';
 import {
-  Nav, Container, Col, Row, Navbar,
+  Container, Col, Row, Navbar, Button, Image, useToggle,
 } from '@edx/paragon';
 import {
   getConfig,
 } from '@edx/frontend-platform';
 import { useDispatch, useSelector } from 'react-redux';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ClassroomHeader from '../../components/ClassroomHeader';
 import Enrollment from '../enrollment/enrollment';
 import Courses from '../courses/courses';
 import { fetchClassroomByUuid } from './classroomSlice';
+import AddCourseIcon from '../../assets/AddCourse.svg';
+import AddCourseDialog from '../../components/AddCourseDialog';
 
 const Classroom = (props) => {
   const { slug } = props;
@@ -27,25 +31,29 @@ const Classroom = (props) => {
     if (classroomStatus === 'initial') { dispatch(fetchClassroomByUuid(classroomIdParam)); }
   }, [classroomStatus, classroomIdParam, dispatch]);
 
+  const [isOpen, open, close] = useToggle(false);
+
   const newClassroomLink = `${getConfig().PUBLIC_PATH}/${slug}`;
   return (
     <>
       <ClassroomHeader title={classroomTitle} />
-      <Navbar bg="light" expand="lg" className="mb-3">
-        <Nav>
-          <Nav.Item>
-            <Nav.Link eventKey="1" href={newClassroomLink}>
-              New Classroom
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
+      <Navbar bg="white" expand="lg" className="row justify-content-md-center">
+        <div className="row justify-content-md-center">
+          <div className="col-md-auto">
+            <Button variant="tertiary" onClick={open}><Image src={AddCourseIcon} />&nbsp;AddCourse</Button>
+            <AddCourseDialog isOpen={isOpen} close={close} />
+          </div>
+          <div className="col-md-auto">
+            <Button variant="tertiary" href={newClassroomLink}><FontAwesomeIcon icon={faPlusCircle} />&nbsp;New Classroom</Button>
+          </div>
+        </div>
       </Navbar>
-      <Container>
+      <Container className="bg-light pt-3">
         <Row className="d-flex justify-content-between">
           <Col sm={3} md={4} className="flex-shrink-1">
             <Enrollment />
           </Col>
-          <Col sm={5} md={7}>
+          <Col sm={6} md={8}>
             <Courses />
           </Col>
         </Row>

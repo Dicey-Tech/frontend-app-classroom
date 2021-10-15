@@ -11,11 +11,11 @@ const Enrollment = () => {
   const [isOpen, open, close] = useToggle(false);
 
   return (
-    <Card>
-      <Card.Header>
+    <Card className="shadow-sm">
+      <Card.Header className="bg-white border-0">
         <div className="d-flex justify-content-between">
           <h2>Your Students</h2>
-          <IconButton icon={faUserPlus} onClick={open} />
+          <IconButton icon={faUserPlus} onClick={open} alt="Add Students" />
           <AddStudentDialog isOpen={isOpen} close={close} />
         </div>
       </Card.Header>

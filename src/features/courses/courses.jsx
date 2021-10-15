@@ -1,14 +1,12 @@
 import React from 'react';
 import {
-  Scrollable, useToggle, Button,
+  Scrollable,
 } from '@edx/paragon';
 import { useSelector } from 'react-redux';
 import CourseCard from '../../components/CourseCard';
-import AddCourseDialog from '../../components/AddCourseDialog';
 
 const Courses = () => {
   const courses = useSelector(state => state.courses.courses);
-  const [isOpen, open, close] = useToggle(false);
 
   const courseCards = courses.map(element => (
     <div key={element.courseId}><CourseCard
@@ -20,16 +18,11 @@ const Courses = () => {
   ));
   return (
     <>
-      <div className="d-flex justify-content-end mb-2">
-        <div>
-          <Button onClick={open}>Add Course</Button>
-        </div>
-      </div>
-      <AddCourseDialog isOpen={isOpen} close={close} />
       <div>
+        <div><h2>Courses</h2></div>
         <Scrollable>
           {courseCards.map(element => (
-            <div className="mb-2">{element}</div>
+            <div key={element.courseId} className="mb-2">{element}</div>
           ))}
         </Scrollable>
       </div>

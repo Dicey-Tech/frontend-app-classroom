@@ -4,6 +4,7 @@ import {
   APP_INIT_ERROR, APP_READY, subscribe, initialize, getConfig,
 } from '@edx/frontend-platform';
 import { AppProvider, ErrorPage } from '@edx/frontend-platform/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -18,8 +19,8 @@ import NewClassroomContainer from './containers/NewClassroomContainer';
 
 import './index.scss';
 
-subscribe(APP_READY, () => {
-  ReactDOM.render(
+const App = () => (
+  <IntlProvider locale="en">
     <AppProvider store={store}>
       <Header />
       <Router basename={getConfig().PUBLIC_PATH}>
@@ -30,9 +31,13 @@ subscribe(APP_READY, () => {
         </Switch>
       </Router>
       <Footer />
-    </AppProvider>,
-    document.getElementById('root'),
-  );
+    </AppProvider>
+  </IntlProvider>
+);
+
+subscribe(APP_READY, () => {
+  ReactDOM.render(<App />,
+    document.getElementById('root'));
 });
 
 subscribe(APP_INIT_ERROR, (error) => {

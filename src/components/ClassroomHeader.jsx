@@ -3,15 +3,12 @@ import { Image } from '@edx/paragon';
 import imageURL from '../assets/ClassroomCover.svg';
 
 const ClassroomHeader = (props) => (
-  <div style={{ position: 'relative' }}>
-    <div>
-      <Image style={{ width: '100%', height: '400px' }} src={imageURL} />
+  <div className="classroom-header">
+    <div className="background-image">
+      <Image src={imageURL} alt="background image" />
     </div>
 
-    <div style={{
-      position: 'absolute', top: '50%', left: '10%',
-    }}
-    >
+    <div className="title">
       <h2>{props.title}</h2>
     </div>
   </div>

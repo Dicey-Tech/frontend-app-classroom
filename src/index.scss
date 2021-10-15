@@ -7,3 +7,7 @@
 
 @import "~@edx/frontend-component-header/dist/index";
 @import "~@edx/frontend-component-footer/dist/footer";
+
+@import './components/classroomheader.scss';
+@import './components/coursecard.scss';
+@import './features/classroom/classroom.scss';

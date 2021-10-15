@@ -18,24 +18,6 @@ export const fetchEnterpriseFromSlug = createAsyncThunk('enterprise/fetchEnterpr
   },
 });
 
-export const fetchEnterpriseFromUuid = createAsyncThunk('enterprise/fetchEnterpriseFromUuid', async (uuid) => {
-  console.log('got to fetchEnterpriseFromUuid');
-  const result = await LmsApiService.fetchEnterpriseByUuid(uuid);
-  console.log(result, 'response from API');
-  return result.data.results[0];
-},
-{
-  condition: (uuid, { getState }) => {
-    const { enterprise } = getState();
-    const currentUuid = enterprise.uuid;
-    const { status } = enterprise;
-    if (status === 'loading' || uuid === currentUuid) {
-      return false;
-    }
-    return true;
-  },
-});
-
 const initialState = {
   slug: null,
   uuid: null,
@@ -61,14 +43,6 @@ const enterpriseSlice = createSlice({
       state.status = 'loading';
     }).addCase(fetchEnterpriseFromSlug.fulfilled, (state, action) => {
       console.log(action.payload, 'in reducer');
-      const enterpriseInfo = action.payload;
-      state.slug = enterpriseInfo.slug;
-      state.uuid = enterpriseInfo.uuid;
-      state.name = enterpriseInfo.name;
-      state.id = enterpriseInfo.id;
-      state.status = 'loaded';
-    }).addCase(fetchEnterpriseFromUuid.fulfilled, (state, action) => {
-      console.log(action.payload, 'in the end');
       const enterpriseInfo = action.payload;
       state.slug = enterpriseInfo.slug;
       state.uuid = enterpriseInfo.uuid;
