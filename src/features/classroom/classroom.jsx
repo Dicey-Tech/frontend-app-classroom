@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import {
   Container, Col, Row, Navbar, Button, Image, useToggle,
 } from '@edx/paragon';
-import {
-  getConfig,
-} from '@edx/frontend-platform';
 import { useDispatch, useSelector } from 'react-redux';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,10 +14,8 @@ import AddCourseIcon from '../../assets/AddCourse.svg';
 import AddCourseDialog from '../../components/AddCourseDialog';
 
 const Classroom = (props) => {
-  const { slug } = props;
-  const classroomIdParam = props.classroomId;
-
-  // const classroomId = useSelector(state => state.classroom.classroomId);
+  const { slug, classroomId } = props;
+  const history = useHistory();
   const classroomStatus = useSelector(state => state.classroom.status);
   const classroomTitle = useSelector(state => state.classroom.title);
   const dispatch = useDispatch();
@@ -28,12 +24,11 @@ const Classroom = (props) => {
     /* check status of data here. if fetching or empty than send the dispatch */
     /* if the classroomId in the store is different than the one in the params than */
     /* it's a new classroom . Reload                                                */
-    if (classroomStatus === 'initial') { dispatch(fetchClassroomByUuid(classroomIdParam)); }
-  }, [classroomStatus, classroomIdParam, dispatch]);
+    if (classroomStatus === 'initial') { dispatch(fetchClassroomByUuid(classroomId)); }
+  }, [classroomStatus, classroomId, dispatch]);
 
   const [isOpen, open, close] = useToggle(false);
 
-  const newClassroomLink = `${getConfig().PUBLIC_PATH}/${slug}`;
   return (
     <>
       <ClassroomHeader title={classroomTitle} />
@@ -44,7 +39,7 @@ const Classroom = (props) => {
             <AddCourseDialog isOpen={isOpen} close={close} />
           </div>
           <div className="col-md-auto">
-            <Button variant="tertiary" href={newClassroomLink}><FontAwesomeIcon icon={faPlusCircle} />&nbsp;New Classroom</Button>
+            <Button variant="tertiary" onClick={() => history.push(`/${slug}`)}><FontAwesomeIcon icon={faPlusCircle} />&nbsp;New Classroom</Button>
           </div>
         </div>
       </Navbar>

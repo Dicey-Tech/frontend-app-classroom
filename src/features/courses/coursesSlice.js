@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ClassroomApiService from '../../app/services/ClassroomApiService';
 import LmsApiService from '../../app/services/LmsApiService';
 
@@ -19,6 +19,7 @@ export const fetchCoursesForClassroom = createAsyncThunk('courses/fetchCourses',
     /* eslint-disable no-restricted-syntax  */
     /* eslint-disable no-await-in-loop */
     for (const courseData of results.courses) {
+      courseData.courseId = courseData.course_id;
       console.log(courseData, 'fetching for');
       const courseInfo = await LmsApiService.fetchCourseInfo(courseData.course_id);
       console.log(courseInfo, 'course data recieved');
@@ -34,20 +35,25 @@ export const fetchCoursesForClassroom = createAsyncThunk('courses/fetchCourses',
   console.log(results, 'full course data');
   return results;
 });
-
-export const addCourseToClassroom = createAsyncThunk('courses/addCourse', async ({ Uuid, courseId }) => {
-  const response = await ClassroomApiService.addCourseToClassroom(Uuid, courseId);
-  const courseInfo = await LmsApiService.fetchCourseInfo(response.data.course.courseId);
-  const result = {
-    courseId: courseInfo.data.courseId,
-    active: response.data.course.active,
-    title: courseInfo.data.title,
-    description: courseInfo.data.description,
-    imageURL: courseInfo.data.imageURL,
-  };
+// The courseId here is a Course Run.
+/*
+export const addCourseToClassroom = createAsyncThunk('courses/addCourse', async ({ classroomId, courseId },
+   { dispatch }) => {
+  const response = await ClassroomApiService.addCourseToClassroom(classroomId, courseId);
+  // const courseInfo = await LmsApiService.fetchCourseInfo(response.data.course.courseId);
+  // const result = {
+  //  courseId: courseInfo.data.courseId,
+  //  active: response.data.course.active,
+  //  title: courseInfo.data.title,
+  //  description: courseInfo.data.description,
+  //  imageURL: courseInfo.data.imageURL,
+  // };
+  // TODO: detect errors!
+  // if there is no error - than reload the courses
+  dispatch(fetchCoursesForClassroom(classroomId));
   return result;
 });
-
+*/
 export const archiveCourseInClassroom = createAsyncThunk('courses/archiveCourse', async () => {
 });
 
@@ -64,9 +70,12 @@ const coursesSlice = createSlice({
         state.courses = [...action.payload.courses]; /* TODO map data rather than clone */
         state.status = 'success';
       })
+      /*
       .addCase(addCourseToClassroom.fulfilled, (state, action) => {
         // should check if the course already exists.. if
         // it does than ignore?? or replace. we replace
+        /*
+        TODO: remove this reducer as it is not needed
         state.startFetching = false;
         state.status = 'success';
         const course = action.payload;
@@ -83,7 +92,7 @@ const coursesSlice = createSlice({
             imageURL: course.imageURL,
           });
         }
-      })
+      }) */
       .addCase(archiveCourseInClassroom.fulfilled, (state, action) => {
         state.startFetching = false;
         state.status = 'error';
@@ -94,11 +103,12 @@ const coursesSlice = createSlice({
           /* TODO: can either do nothing or put up an error? */
           state.error = { code: 'some error yet to be determined' };
         }
-      })
-      .addMatcher(isAnyOf(addCourseToClassroom.pending, archiveCourseInClassroom.pending), (state) => {
-        state.startFetching = true;
-        state.status = 'updating';
       });
+    /* .addMatcher(isAnyOf(addCourseToClassroom.pending, archiveCourseInClassroom.pending), (state) => {
+      state.startFetching = true;
+      state.status = 'updating';
+    })
+    */
   },
 });
 

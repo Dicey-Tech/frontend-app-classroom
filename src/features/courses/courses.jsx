@@ -9,7 +9,7 @@ const Courses = () => {
   const courses = useSelector(state => state.courses.courses);
 
   const courseCards = courses.map(element => (
-    <div key={element.courseId}><CourseCard
+    <div key={element.courseId} className="mb-2"><CourseCard
       title={element.title}
       description={element.description}
       imageURL={element.imageURL}
@@ -21,9 +21,7 @@ const Courses = () => {
       <div>
         <div><h2>Courses</h2></div>
         <Scrollable>
-          {courseCards.map(element => (
-            <div key={element.courseId} className="mb-2">{element}</div>
-          ))}
+          {courseCards}
         </Scrollable>
       </div>
     </>

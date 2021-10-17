@@ -5,21 +5,6 @@ import configuration from '../../config';
 /* this file is just scaffolding right just for testing */
 /* eslint-disable eqeqeq */
 
-const courses = [
-  {
-    courseId: 1,
-    active: true,
-  },
-  {
-    courseId: 2,
-    active: true,
-  },
-  {
-    courseId: 3,
-    active: true,
-  },
-];
-
 class ClassroomApiService {
   static apiClient = getAuthenticatedHttpClient;
 
@@ -57,15 +42,13 @@ class ClassroomApiService {
 
   /* gets just the userIds in the classroom, rest of information comes from the lms */
   static async fetchClassroomEnrollment(uuid) {
-    const page = 1; /* TODO need to store and return the paging information */
-    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/enrollments/?page=${page}`;
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/enrollments/`;
     return ClassroomApiService.apiClient().get(requestUrl);
   }
 
   /* TODO:  just gets the course UUIDs, rest of it comes from LMS, UUID is enterprise UUID which needed */
   static async fetchClassroomCourses(uuid) {
-    const page = 1; /* TODO add param */
-    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/assignments?page=${page}`;
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/assignments`;
     return ClassroomApiService.apiClient().get(requestUrl);
   }
 
@@ -83,17 +66,13 @@ class ClassroomApiService {
     return ClassroomApiService.apiClient().get(requestUrl);
   }
 
-  static async addCourseToClassroom(_, courseId) {
-    courses.push({ courseId, active: true });
-    return {
-      data: {
-        success: true,
-        course: {
-          courseId,
-          active: true,
-        },
-      },
+  static async addCourseToClassroom(uuid, courseId) {
+    const formData = {
+      course_id: courseId,
+      classroom_instance: uuid,
     };
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/assignments/`;
+    return ClassroomApiService.apiClient().post(requestUrl, formData);
   }
 }
 

@@ -1,4 +1,4 @@
-import reducer, { fetchCoursesForClassroom, addCourseToClassroom } from './coursesSlice';
+import reducer, { fetchCoursesForClassroom } from './coursesSlice';
 
 const initialState = {
   courses: [],
@@ -66,28 +66,30 @@ describe('Get list of project in current classroom', () => {
       },
     })).toEqual(expected);
   });
-  it('adds a new course to the projects', () => {
-    const expectedResult = {};
-    expectedResult.courses = initialTestingState.courses.map(o => o);
-    expectedResult.courses.push({
-      courseId: 3,
-      title: 'course 3',
-      description: 'this is course 3',
-      imageURL: 'shuffle.jpg',
-    });
-    expectedResult.startFetching = false;
-    expectedResult.status = 'success';
-
-    expect(reducer(initialTestingState, {
-      type: addCourseToClassroom.fulfilled,
-      payload: {
+  /*
+    it('adds a new course to the projects', () => {
+      const expectedResult = {};
+      expectedResult.courses = initialTestingState.courses.map(o => o);
+      expectedResult.courses.push({
         courseId: 3,
         title: 'course 3',
         description: 'this is course 3',
         imageURL: 'shuffle.jpg',
-      },
-    })).toEqual(expectedResult);
-  });
+      });
+      expectedResult.startFetching = false;
+      expectedResult.status = 'success';
+
+      expect(reducer(initialTestingState, {
+        type: addCourseToClassroom.fulfilled,
+        payload: {
+          courseId: 3,
+          title: 'course 3',
+          description: 'this is course 3',
+          imageURL: 'shuffle.jpg',
+        },
+      })).toEqual(expectedResult);
+    });
+    */
   /* it('it archives a course', () => {
         const expectedResult = { ...initialTestingState }
         expectedResult.courses[0].archived = false

@@ -3,9 +3,8 @@ import {
 } from '@edx/paragon';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { fetchCoursesForClassroom } from '../features/courses/coursesSlice';
 import ImageURL from '../assets/GenericCourseImage.svg';
-import { addCourseToClassroom } from '../features/courses/coursesSlice';
 import ClassroomApiService from '../app/services/ClassroomApiService';
 
 async function fetchAllCourses(classroomId) {
@@ -34,20 +33,23 @@ const AddCourseDialog = ({ isOpen, close }) => {
     }
   }, [isOpen]);
 
-  const addCourse = (courseId) => {
-    dispatch(addCourseToClassroom({ classroomId, courseId }));
+  const addCourse = async (courseId) => {
+    await ClassroomApiService.addCourseToClassroom(classroomId, courseId);
+    // if there is no error - TODO check for an error!
+    // The result is not very rich
+    dispatch(fetchCoursesForClassroom(classroomId));
     // recalculate the cards?
   };
 
   const courseListCards = courseList.filter((e) => courses
-    .findIndex((c) => c.courseId === e.courseId) < 0)
+    .findIndex((c) => c.courseId === e/* .courseId */) < 0)
     .map((element) => (
-      <Card id={element.courseId} key={element.courseId} style={{ width: '15em' }}>
+      <Card id={element/* .courseId */} key={element/* .courseId */} style={{ width: '15em' }}>
         <Card.Img variant="top" src={ImageURL} />
         <Card.Body>
           <Card.Title>{element.title}</Card.Title>
           <Card.Text>{element.description}</Card.Text>
-          <Button variant="primary" onClick={() => addCourse(element.courseId)}>Add Course</Button>
+          <Button variant="primary" onClick={() => addCourse(element/* .courseId */)}>Add Course</Button>
         </Card.Body>
       </Card>
     ));

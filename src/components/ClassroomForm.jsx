@@ -1,21 +1,21 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { Button, Form, Container } from '@edx/paragon';
 
 const ClassroomForm = (props) => {
   const { onSuccess, currentTitle } = props; // function which redirects to the proper page.. or re-renders??
   const titleRef = React.createRef();
   const formRef = React.createRef();
+  const history = useHistory();
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // call and await API to create classroom
-    // than redirect with the classroomId at the end of onSuccessURL
-    console.log('Submit');
     onSuccess({ title: titleRef.current.value }); // need to get the classroomId
   };
   const handleFormReset = () => {
     // event.preventDefault()
-    formRef.reset();
+    // formRef.reset();
+    history.goBack();
   };
   return (
     <Container size="md" className="md-4">
