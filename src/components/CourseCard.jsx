@@ -6,14 +6,14 @@ import configuration from '../config';
 
 /* TODO replace this with out own layout */
 const CourseCard = (props) => {
-  const openURL = (e, urlToOpen) => {
-    e.preventDefault();
-    window.open(urlToOpen, '_blank');
+  const openURL = (e, urlToOpen, newTab = false) => {
+    e.stopPropagation();
+    window.open(urlToOpen, newTab ? '_blank' : '_self');
   };
-  const gradebookURL = `${configuration.GRADEBOOK_URL}/gradebook/${props.courseId}`;
+  const gradebookURL = `${configuration.GRADEBOOK_URL}/${props.courseId}`;
   const courseURL = `${configuration.LMS_BASE_URL}/courses/${props.courseId}`;
   return (
-    <Card className="shadow-sm course-card" onClick={(e) => openURL(e, courseURL)}>
+    <Card className="shadow-sm course-card" onClick={(e) => openURL(e, courseURL, true)}>
       <Card.Body>
         <Container className="course-content">
           <div className="d-flex">

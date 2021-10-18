@@ -17,11 +17,13 @@ import NewClassroomContainer from './containers/NewClassroomContainer';
 
 import './index.scss';
 
+console.log(getConfig(), 'config');
+
 const App = () => (
   <IntlProvider locale="en">
     <AppProvider store={store}>
       <Header />
-      <Router basename={getConfig().PUBLIC_PATH}>
+      <Router basename={getConfig().PUBLIC_PATH.replace(/\/$/, '')}>
         <Switch>
           <Route path="/:slug/:classroomId/" exact component={ClassroomContainer} />
           <Route path="/:slug/" exact component={NewClassroomContainer} />
