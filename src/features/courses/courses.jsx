@@ -13,6 +13,7 @@ const Courses = () => {
       title={element.title}
       description={element.description}
       imageURL={element.imageURL}
+      courseId={element.courseId}
     />
     </div>
   ));

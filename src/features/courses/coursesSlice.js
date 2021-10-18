@@ -15,23 +15,23 @@ export const fetchCoursesForClassroom = createAsyncThunk('courses/fetchCourses',
     courses: [...response.data.results],
   };
   // have to make a request to get the classroom details for each course
-  try {
-    /* eslint-disable no-restricted-syntax  */
-    /* eslint-disable no-await-in-loop */
-    for (const courseData of results.courses) {
-      courseData.courseId = courseData.course_id;
-      console.log(courseData, 'fetching for');
+  /* eslint-disable no-restricted-syntax  */
+  /* eslint-disable no-await-in-loop */
+  for (const courseData of results.courses) {
+    courseData.courseId = courseData.course_id;
+    console.log(courseData, 'fetching for');
+    try {
       const courseInfo = await LmsApiService.fetchCourseInfo(courseData.course_id);
       console.log(courseInfo, 'course data recieved');
       courseData.title = courseInfo.data.name;
       courseData.description = courseInfo.data.short_description;
       courseData.imageURL = courseInfo.data.media.image.small;
+    } catch {
+      // nothing to do, just take what data we can get.
     }
-    /* eslint-enable no-await-in-loop */
-    /* eslint-enable no-restricted-syntax  */
-  } catch (error) {
-    /* an empty catch block */
   }
+  /* eslint-enable no-await-in-loop */
+  /* eslint-enable no-restricted-syntax  */
   console.log(results, 'full course data');
   return results;
 });

@@ -12,6 +12,7 @@ const configuration = {
   SEGMENT_KEY: process.env.SEGMENT_KEY,
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
   CSRF_COOKIE_NAME: process.env.CSRF_COOKIE_NAME,
+  GRADEBOOK_URL: process.env.GRADEBOOK_URL,
 };
 
 export default configuration;

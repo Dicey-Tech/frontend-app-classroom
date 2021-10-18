@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-
 import {
   APP_INIT_ERROR, APP_READY, subscribe, initialize, getConfig,
 } from '@edx/frontend-platform';
@@ -13,7 +12,6 @@ import Footer, { messages as footerMessages } from '@edx/frontend-component-foot
 import store from './app/store';
 
 import appMessages from './i18n';
-// import ExamplePage from './example/ExamplePage';
 import ClassroomContainer from './containers/ClassroomContainer';
 import NewClassroomContainer from './containers/NewClassroomContainer';
 

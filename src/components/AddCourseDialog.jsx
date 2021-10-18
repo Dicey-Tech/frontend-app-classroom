@@ -1,5 +1,5 @@
 import {
-  Button, CardGrid, ModalDialog, Card, Container,
+  Button, CardGrid, ModalDialog, Card, Container, Spinner,
 } from '@edx/paragon';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +20,7 @@ const AddCourseDialog = ({ isOpen, close }) => {
 
   const [courseList, setCourseList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -31,45 +32,55 @@ const AddCourseDialog = ({ isOpen, close }) => {
         setCourseList(result);
       });
     }
-  }, [isOpen]);
+  }, [courses, isOpen]);
 
   const addCourse = async (courseId) => {
-    await ClassroomApiService.addCourseToClassroom(classroomId, courseId);
-    // if there is no error - TODO check for an error!
-    // The result is not very rich
-    dispatch(fetchCoursesForClassroom(classroomId));
-    // recalculate the cards?
+    try {
+      setIsProcessing(true);
+      await ClassroomApiService.addCourseToClassroom(classroomId, courseId);
+      dispatch(fetchCoursesForClassroom(classroomId)); // could just add the single course in here - TODO
+    } catch (e) {
+      console.log(e);
+      alert('An error occured adding the course to the classroom.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
-
-  const courseListCards = courseList.filter((e) => courses
-    .findIndex((c) => c.courseId === e/* .courseId */) < 0)
-    .map((element) => (
-      <Card id={element/* .courseId */} key={element/* .courseId */} style={{ width: '15em' }}>
-        <Card.Img variant="top" src={ImageURL} />
-        <Card.Body>
-          <Card.Title>{element.title}</Card.Title>
-          <Card.Text>{element.description}</Card.Text>
-          <Button variant="primary" onClick={() => addCourse(element/* .courseId */)}>Add Course</Button>
-        </Card.Body>
-      </Card>
-    ));
+  //
+  const courseListCards = courseList.map((element) => (
+    <Card id={element/* .courseId */} key={element/* .courseId */} style={{ width: '15em' }}>
+      <Card.Img variant="top" src={ImageURL} />
+      <Card.Body>
+        <Card.Title>{element.title}</Card.Title>
+        <Card.Text>{element.description}</Card.Text>
+        <Button
+          variant="primary"
+          onClick={() => addCourse(element/* .courseId */)}
+          disabled={isProcessing}
+        >{isProcessing && (<><Spinner animation="border" size="sm" />&nbsp;</>)}Add Course
+        </Button>
+      </Card.Body>
+    </Card>
+  ));
   return (
-    <ModalDialog isOpen={isOpen} onClose={close} hasCloseButton title="Add A Course" size="lg">
-      <ModalDialog.Header>
-        Add A Course
-      </ModalDialog.Header>
-      <ModalDialog.Body>
-        <Container>
-          {isLoading && (<div className="text-center"><h2>Loading...</h2></div>)}
-          {!isLoading && courseListCards.length === 0 && (<div className="text-center"><h2>No courses available</h2></div>)}
-          {!isLoading && courseListCards.length > 0 && (
-            <CardGrid columnSizes={{ sm: 10, lg: 4, xl: 4 }} style={{ width: '100%' }}>
-              {courseListCards}
-            </CardGrid>
-          )}
-        </Container>
-      </ModalDialog.Body>
-    </ModalDialog>
+    <>
+      <ModalDialog isOpen={isOpen} onClose={close} hasCloseButton title="Add A Course" size="lg">
+        <ModalDialog.Header>
+          Add A Course
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          <Container>
+            {isLoading && (<div className="text-center"><h2>Loading...</h2></div>)}
+            {!isLoading && courseListCards.length === 0 && (<div className="text-center"><h2>No courses available</h2></div>)}
+            {!isLoading && courseListCards.length > 0 && (
+              <CardGrid columnSizes={{ sm: 10, lg: 4, xl: 4 }} style={{ width: '100%' }}>
+                {courseListCards}
+              </CardGrid>
+            )}
+          </Container>
+        </ModalDialog.Body>
+      </ModalDialog>
+    </>
   );
 };
 

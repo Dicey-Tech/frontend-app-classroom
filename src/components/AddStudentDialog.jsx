@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  ModalDialog, Form, Button, ActionRow,
+  ModalDialog, Form, Button, ActionRow, Spinner,
 } from '@edx/paragon';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,14 +11,22 @@ const AddStudentDialog = ({ isOpen, close }) => {
   const emailsRef = React.createRef();
   const classroomId = useSelector(store => store.classroom.classroomId);
   const dispatch = useDispatch();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const addStudents = async () => {
     const studentEmails = emailsRef.current.value;
     if (studentEmails !== '') {
-      await ClassroomApiService.addBulkEnrollmentToClassroom(classroomId, studentEmails);
-      dispatch(fetchStudentsForClassroom(classroomId));
-      emailsRef.current.value = '';
-      close();
+      try {
+        setIsProcessing(true);
+        await ClassroomApiService.addBulkEnrollmentToClassroom(classroomId, studentEmails);
+        dispatch(fetchStudentsForClassroom(classroomId));
+        emailsRef.current.value = '';
+        close();
+      } catch (e) {
+        alert('An error occured adding students to the classroom.');
+      } finally {
+        setIsProcessing(false);
+      }
     }
   };
   return (
@@ -40,11 +48,11 @@ const AddStudentDialog = ({ isOpen, close }) => {
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
-          <ModalDialog.CloseButton variant="tertiary">
+          <ModalDialog.CloseButton variant="tertiary" disabled={isProcessing}>
             Cancel
           </ModalDialog.CloseButton>
-          <Button variant="primary" onClick={addStudents}>
-            Add Students
+          <Button variant="primary" onClick={addStudents} disabled={isProcessing}>
+            {isProcessing && (<><Spinner animation="border" size="sm" />&nbsp;</>)}Add Students
           </Button>
         </ActionRow>
       </ModalDialog.Footer>
