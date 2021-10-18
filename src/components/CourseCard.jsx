@@ -10,8 +10,8 @@ const CourseCard = (props) => {
     e.preventDefault();
     window.open(urlToOpen, '_blank');
   };
-  const gradebookURL = `${GRADEBOOK_URL}/gradebook/${props.courseId}`;
-  const courseURL = `${LMS_BASE_URL}/courses/${props.courseId}`;
+  const gradebookURL = `${configuration.GRADEBOOK_URL}/gradebook/${props.courseId}`;
+  const courseURL = `${configuration.LMS_BASE_URL}/courses/${props.courseId}`;
   return (
     <Card className="shadow-sm course-card" onClick={(e) => openURL(e, courseURL)}>
       <Card.Body>
