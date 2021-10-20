@@ -49,7 +49,7 @@ const AddCourseDialog = ({ isOpen, close }) => {
   //
   const courseListCards = courseList.map((element) => (
     <Card id={element/* .courseId */} key={element/* .courseId */} style={{ width: '15em' }}>
-      <Card.Img variant="top" src={ImageURL} />
+      <Card.Img variant="top" src={element.image.src} />
       <Card.Body>
         <Card.Title>{element.title}</Card.Title>
         <Card.Text>{element.description}</Card.Text>
