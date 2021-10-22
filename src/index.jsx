@@ -10,14 +10,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header, { messages as headerMessages } from '@edx/frontend-component-header';
 import Footer, { messages as footerMessages } from '@edx/frontend-component-footer';
 import store from './app/store';
-
 import appMessages from './i18n';
 import ClassroomContainer from './containers/ClassroomContainer';
 import NewClassroomContainer from './containers/NewClassroomContainer';
-
 import './index.scss';
-
-console.log(getConfig(), 'config');
 
 const App = () => (
   <IntlProvider locale="en">

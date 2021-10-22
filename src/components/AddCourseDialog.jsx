@@ -4,13 +4,20 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCoursesForClassroom } from '../features/courses/coursesSlice';
-import ImageURL from '../assets/GenericCourseImage.svg';
+import DefaultImageURL from '../assets/GenericCourseImage.svg';
 import ClassroomApiService from '../app/services/ClassroomApiService';
 
 async function fetchAllCourses(classroomId) {
   const result = await ClassroomApiService.getAvailableCoursesForClassroom(classroomId);
-  console.log(result, 'get list of all courses');
-  return result;
+  // mangle the return data into our standard
+  const courseData = result.data.map(element => ({
+    courseId: element.key,
+    uuid: element.uuid,
+    title: element.title,
+    imageURL: element.image.src,
+    description: element.short_description,
+  }));
+  return courseData;
 }
 
 const AddCourseDialog = ({ isOpen, close }) => {
@@ -24,12 +31,17 @@ const AddCourseDialog = ({ isOpen, close }) => {
 
   useEffect(() => {
     if (isOpen) {
-      const doCall = (classroomUuid) => fetchAllCourses(classroomUuid).then(result => result.data);
+      const doCall = (classroomUuid) => fetchAllCourses(classroomUuid);
 
       setIsLoading(true);
       doCall(classroomId).then(result => {
         setIsLoading(false);
         setCourseList(result);
+      }).catch(() => {
+        alert('An error occured finding available courses for this classroom');
+        close();
+      }).finally(() => {
+        setIsLoading(false);
       });
     }
   }, [courses, isOpen]);
@@ -38,30 +50,30 @@ const AddCourseDialog = ({ isOpen, close }) => {
     try {
       setIsProcessing(true);
       await ClassroomApiService.addCourseToClassroom(classroomId, courseId);
-      dispatch(fetchCoursesForClassroom(classroomId)); // could just add the single course in here - TODO
+      dispatch(fetchCoursesForClassroom(classroomId));
     } catch (e) {
-      console.log(e);
       alert('An error occured adding the course to the classroom.');
     } finally {
       setIsProcessing(false);
     }
   };
-  //
+
   const courseListCards = courseList.map((element) => (
-    <Card id={element/* .courseId */} key={element/* .courseId */} style={{ width: '15em' }}>
-      <Card.Img variant="top" src={element.image.src} />
+    <Card id={element.courseId} key={element.courseId} style={{ width: '15em' }}>
+      <Card.Img variant="top" src={element.imageURL ? element.imageURL : DefaultImageURL} />
       <Card.Body>
         <Card.Title>{element.title}</Card.Title>
         <Card.Text>{element.description}</Card.Text>
         <Button
           variant="primary"
-          onClick={() => addCourse(element/* .courseId */)}
+          onClick={() => addCourse(element.courseId)}
           disabled={isProcessing}
         >{isProcessing && (<><Spinner animation="border" size="sm" />&nbsp;</>)}Add Course
         </Button>
       </Card.Body>
     </Card>
   ));
+
   return (
     <>
       <ModalDialog isOpen={isOpen} onClose={close} hasCloseButton title="Add A Course" size="lg">

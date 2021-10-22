@@ -14,18 +14,18 @@ import AddCourseIcon from '../../assets/AddCourse.svg';
 import AddCourseDialog from '../../components/AddCourseDialog';
 
 const Classroom = (props) => {
-  const { slug, classroomId } = props;
+  const { slug } = props;
   const history = useHistory();
-  const classroomStatus = useSelector(state => state.classroom.status);
   const classroomTitle = useSelector(state => state.classroom.title);
+  const classroomId = useSelector(state => state.classroom.classroomId);
   const dispatch = useDispatch();
 
   useEffect(() => {
     /* check status of data here. if fetching or empty than send the dispatch */
     /* if the classroomId in the store is different than the one in the params than */
     /* it's a new classroom . Reload                                                */
-    if (classroomStatus === 'initial') { dispatch(fetchClassroomByUuid(classroomId)); }
-  }, [classroomStatus, classroomId, dispatch]);
+    if (classroomId !== props.classroomId) { dispatch(fetchClassroomByUuid(props.classroomId)); }
+  }, [props.classroomId, classroomId, dispatch]);
 
   const [isOpen, open, close] = useToggle(false);
 

@@ -19,10 +19,12 @@ const NewClassroomContainer = ({ history }) => {
   }, [slug, dispatch]);
 
   async function onClassroomCreated({ title }) {
-    // dummy call to create the class room
-    const result = await ClassroomApiService.createNewClassroom({ title, enterpriseUuid });
-    // TODO: need to check for error here - 404 etc..
-    history.push(`/${slug}/${result.data.uuid}`);
+    try {
+      const result = await ClassroomApiService.createNewClassroom({ title, enterpriseUuid });
+      history.push(`/${slug}/${result.data.uuid}`);
+    } catch {
+      alert('an error occured while creating the classroom.');
+    }
   }
 
   return <ClassroomForm onSuccess={onClassroomCreated} />;

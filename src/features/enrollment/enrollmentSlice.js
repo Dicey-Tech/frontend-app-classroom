@@ -7,8 +7,6 @@ const initialState = {
   startFetching: false,
   status: 'initial',
 };
-/* TODO: classroom ID could be a global to the MFE, so might not need to pass it around??
-should be in REDUX store somewhere */
 export const fetchStudentsForClassroom = createAsyncThunk('enrollment/fetchStudents', async (classroomId) => {
   // multi step fetch here. will need to fetch the list of students than fetch each student info
   // from LMS
@@ -36,18 +34,16 @@ export const fetchStudentsForClassroom = createAsyncThunk('enrollment/fetchStude
   /* eslint-eable no-restricted-syntax */
   return results;
 });
-// This is the bulk student load. expects a newline (\r\n) between student emails. Check for fail
-// TODO: not actually sure if this needed!!
-export const addStudentToClassroom = createAsyncThunk('enrollment/addsStudent', () => {
-  // fetch student info from LMS here and add to store
-});
-export const toggleStudentStatusInClassroom = createAsyncThunk('enrollment/toggleStudentStatus', () => {
-  // toggle the state. basically !active . than update in DB and refresh the UI
-});
+
 const enrollmentSlice = createSlice(
   {
     name: 'enrollment',
     initialState,
+    reducers: {
+      reset() {
+        return initialState;
+      },
+    },
     extraReducers: builder => {
       builder.addCase(fetchStudentsForClassroom.pending, (state) => {
         // state = initialState
@@ -69,32 +65,11 @@ const enrollmentSlice = createSlice(
           });
           state.startFetching = false;
           state.status = 'success';
-        })
-        .addCase(addStudentToClassroom.fulfilled, (state, action) => {
-          state.startFetching = false;
-          state.status = 'success';
-          const newStudent = action.payload;
-          state.students.push({
-            studentId: newStudent.studentId,
-            email: newStudent.email,
-            imageUrl: newStudent.imageUrl,
-            staff: newStudent.staff,
-          });
         });
-      /* obsolete
-      .addCase(toggleStudentStatusInClassroom.fulfilled, (state, action) => {
-        state.startFetching = false;
-        state.status = 'success';
-        const studentToToggle = state.students.find(x => x.studentId === action.payload.studentId);
-        if (studentToToggle) {
-          studentToToggle.active = !studentToToggle.active;
-        } else {
-          // some type of error
-        }
-      }); */
     },
 
   },
 );
 
+export const { reset } = enrollmentSlice.actions;
 export default enrollmentSlice.reducer;

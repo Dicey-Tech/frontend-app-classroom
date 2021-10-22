@@ -27,9 +27,15 @@ export const updateClassroomDetails = createAsyncThunk('classroom/updateClassroo
   const response = await ClassroomApiService.updateClassroomByUuid(classroomId, { title, description });
   return response.data; // <== should pass the title and description as payload
 });
+
 const classroomSlice = createSlice({
   name: 'classroom',
   initialState,
+  reducers: {
+    reset() {
+      return initialState;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(fetchClassroomByUuid.pending, (state) => {
       state.pending = true;
@@ -63,4 +69,5 @@ const classroomSlice = createSlice({
 
 });
 
+export const { reset } = classroomSlice.actions;
 export default classroomSlice.reducer;

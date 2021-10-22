@@ -3,7 +3,6 @@ import LmsApiService from '../../app/services/LmsApiService';
 
 export const fetchEnterpriseFromSlug = createAsyncThunk('enterprise/fetchEnterpriseFromSlug', async (slug) => {
   const result = await LmsApiService.fetchEnterpriseBySlug(slug);
-  console.log(result, 'response from API');
   return result.data.results[0];
 },
 {

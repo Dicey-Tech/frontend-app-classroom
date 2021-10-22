@@ -11,14 +11,12 @@ class ClassroomApiService {
   static baseUrl = configuration.CLASSROOM_BASE_URL;
 
   static async fetchClassroomByUuid(uuid) {
-    console.log(uuid, 'fetching');
     const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}`;
 
     return ClassroomApiService.apiClient().get(requestUrl);
   }
 
   static async createNewClassroom({ title, enterpriseUuid }) {
-    console.log(title, 'creating');
     const formData = {
       name: title,
       active: true,
@@ -29,24 +27,12 @@ class ClassroomApiService {
     return ClassroomApiService.apiClient().post(requestUrl, formData);
   }
 
-  static async updateClassroomByUuid(Uuid, data) {
-    // await sleep(1000)
-    return {
-      data: {
-        title: data.title,
-        description: data.description,
-        active: data.active,
-      },
-    };
-  }
-
   /* gets just the userIds in the classroom, rest of information comes from the lms */
   static async fetchClassroomEnrollment(uuid) {
     const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/enrollments/`;
     return ClassroomApiService.apiClient().get(requestUrl);
   }
 
-  /* TODO:  just gets the course UUIDs, rest of it comes from LMS, UUID is enterprise UUID which needed */
   static async fetchClassroomCourses(uuid) {
     const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/assignments`;
     return ClassroomApiService.apiClient().get(requestUrl);
