@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import {
-  Container, Col, Row, Navbar, Button, Image, useToggle, Icon,
+  Container, Col, Row, Navbar, Button, Image, useToggle,
 } from '@edx/paragon';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddCircle } from '@edx/paragon/icons';
