@@ -47,7 +47,7 @@ const Classroom = (props) => {
           </div>
         </div>
       </Navbar>
-      <Container className="bg-light pt-3">
+      <Container className="pt-3">
         <Row className="d-flex justify-content-between">
           <Col sm={3} md={4} className="flex-shrink-1">
             <Enrollment />

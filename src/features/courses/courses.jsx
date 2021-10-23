@@ -1,7 +1,4 @@
 import React from 'react';
-import {
-  Scrollable,
-} from '@edx/paragon';
 import { useSelector } from 'react-redux';
 import CourseCard from '../../components/CourseCard';
 
@@ -21,9 +18,7 @@ const Courses = () => {
     <>
       <div>
         <div><h2>Courses</h2></div>
-        <Scrollable>
-          {courseCards}
-        </Scrollable>
+        {courseCards}
       </div>
     </>
   );
