@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import {
-  Container, Col, Row, Navbar, Button, Image, useToggle,
+  Container, Col, Row, Navbar, Button, Image, useToggle, Icon,
 } from '@edx/paragon';
 import { useDispatch, useSelector } from 'react-redux';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AddCircle } from '@edx/paragon/icons';
 import ClassroomHeader from '../../components/ClassroomHeader';
 import Enrollment from '../enrollment/enrollment';
 import Courses from '../courses/courses';
@@ -35,11 +34,16 @@ const Classroom = (props) => {
       <Navbar bg="white" expand="lg" className="row justify-content-md-center">
         <div className="row justify-content-md-center">
           <div className="col-md-auto">
-            <Button variant="tertiary" onClick={open}><Image src={AddCourseIcon} />&nbsp;AddCourse</Button>
+            <Button variant="tertiary" onClick={open}>
+              <Image src={AddCourseIcon} style={{ height: 24, width: 24 }} />
+              &nbsp;AddCourse
+            </Button>
             <AddCourseDialog isOpen={isOpen} close={close} />
           </div>
-          <div className="col-md-auto">
-            <Button variant="tertiary" onClick={() => history.push(`/${slug}`)}><FontAwesomeIcon icon={faPlusCircle} />&nbsp;New Classroom</Button>
+          <div className="col-md-auto align-middle">
+            <Button variant="tertiary" onClick={() => history.push(`/${slug}`)} iconBefore={AddCircle}>
+              New Classroom
+            </Button>
           </div>
         </div>
       </Navbar>
