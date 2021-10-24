@@ -8,8 +8,8 @@ const ClassroomHeader = (props) => (
       <Image src={imageURL} alt="background image" />
     </div>
 
-    <div className="title">
-      <h2>{props.title}</h2>
+    <div>
+      <span className="title">{props.title}</span>
     </div>
   </div>
 );
