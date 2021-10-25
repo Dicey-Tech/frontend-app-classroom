@@ -46,4 +46,6 @@ initialize({
     headerMessages,
     footerMessages,
   ],
+  requireAuthenticatedUser: true,
+  hydrateAuthenticatedUser: true,
 });
