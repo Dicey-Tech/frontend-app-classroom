@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import {
   ModalDialog, Form, Button, ActionRow, Spinner,
@@ -59,4 +60,10 @@ const AddStudentDialog = ({ isOpen, close }) => {
     </ModalDialog>
   );
 };
+
 export default AddStudentDialog;
+
+AddStudentDialog.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+};

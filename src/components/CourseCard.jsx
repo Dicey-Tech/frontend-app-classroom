@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Card, Image, Button, Container,
@@ -35,4 +36,12 @@ const CourseCard = (props) => {
     </Card>
   );
 };
+
 export default CourseCard;
+
+CourseCard.propTypes = {
+  courseId: PropTypes.string.isRequired,
+  imageURL: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};

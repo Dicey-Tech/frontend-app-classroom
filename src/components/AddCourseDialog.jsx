@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   Button, CardGrid, ModalDialog, Card, Container, Spinner,
 } from '@edx/paragon';
@@ -97,3 +98,8 @@ const AddCourseDialog = ({ isOpen, close }) => {
 };
 
 export default AddCourseDialog;
+
+AddCourseDialog.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+};

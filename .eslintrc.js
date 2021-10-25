@@ -4,7 +4,7 @@ module.exports = createConfig('eslint', {
     "rules":
     {
         'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state'] }],
-        'react/prop-types': 'off'
+        //'react/prop-types': 'off'
     }
 
 });

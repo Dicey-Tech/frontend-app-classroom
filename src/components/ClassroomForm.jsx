@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Form, Container } from '@edx/paragon';
@@ -40,3 +41,11 @@ const ClassroomForm = (props) => {
 };
 
 export default ClassroomForm;
+
+ClassroomForm.defaultProps = {
+  currentTitle: null,
+};
+ClassroomForm.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
+  currentTitle: PropTypes.string,
+};

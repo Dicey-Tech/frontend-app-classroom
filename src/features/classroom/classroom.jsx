@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import {
   Container, Col, Row,
@@ -40,3 +41,8 @@ const Classroom = (props) => {
 };
 
 export default Classroom;
+
+Classroom.propTypes = {
+  classroomId: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Navbar, Image, Button, useToggle,
@@ -19,7 +20,7 @@ const NavigationBar = (props) => {
         <div className="col-md-auto">
           <Button variant="tertiary" onClick={open}>
             <Image src={AddCourseIcon} style={{ height: 24, width: 24 }} />
-                        &nbsp;AddCourse
+            &nbsp;AddCourse
           </Button>
           <AddCourseDialog isOpen={isOpen} close={close} />
         </div>
@@ -34,3 +35,7 @@ const NavigationBar = (props) => {
 };
 
 export default NavigationBar;
+
+NavigationBar.propTypes = {
+  slug: PropTypes.string.isRequired,
+};

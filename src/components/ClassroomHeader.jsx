@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React from 'react';
 import { Image } from '@edx/paragon';
 import imageURL from '../assets/ClassroomCover.svg';
@@ -15,3 +16,7 @@ const ClassroomHeader = (props) => (
 );
 
 export default ClassroomHeader;
+
+ClassroomHeader.propTypes = {
+  title: PropTypes.string.isRequired,
+};
