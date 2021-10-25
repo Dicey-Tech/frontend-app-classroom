@@ -13,13 +13,11 @@ const initialState = {
 };
 
 export const fetchClassroomByUuid = createAsyncThunk('classroom/fetchClassroom', async (classroomId, { dispatch }) => {
-  console.log(classroomId, 'in the dispatch');
   const response = await ClassroomApiService.fetchClassroomByUuid(classroomId);
   // fill in data for courses here (dispatch here)?
   // fill in data for enrollment here (dispatch here)?
   await dispatch(fetchCoursesForClassroom(classroomId));
   await dispatch(fetchStudentsForClassroom(classroomId));
-  console.log(response, 'dispatch response');
   return response.data;
 });
 

@@ -11,7 +11,6 @@ export const fetchStudentsForClassroom = createAsyncThunk('enrollment/fetchStude
   // multi step fetch here. will need to fetch the list of students than fetch each student info
   // from LMS
   const response = await ClassroomApiService.fetchClassroomEnrollment(classroomId);
-  console.log(response.data, 'enrollment');
   const results = {
     enrollment: [...response.data.results],
   };
@@ -21,10 +20,7 @@ export const fetchStudentsForClassroom = createAsyncThunk('enrollment/fetchStude
     student.email = student.user_id;
     try {
       /* eslint-disable no-await-in-loop */
-      // for (const studentData of response.data.enrollment) {
-      console.log(student, 'fetching data for');
       const studentInfo = await LmsApiService.fetchStudentInfoByEmail(student.email);
-      console.log(response, 'recieved student Info');
       student.imageUrl = studentInfo.data[0].profile_image.image_url_small;
       /* eslint-enable no-await-in-loop */
     } catch (error) {

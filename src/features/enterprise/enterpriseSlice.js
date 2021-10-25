@@ -41,7 +41,6 @@ const enterpriseSlice = createSlice({
     builder.addCase(fetchEnterpriseFromSlug.pending, (state) => {
       state.status = 'loading';
     }).addCase(fetchEnterpriseFromSlug.fulfilled, (state, action) => {
-      console.log(action.payload, 'in reducer');
       const enterpriseInfo = action.payload;
       state.slug = enterpriseInfo.slug;
       state.uuid = enterpriseInfo.uuid;
