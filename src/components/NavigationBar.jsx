@@ -25,7 +25,7 @@ const NavigationBar = (props) => {
           <AddCourseDialog isOpen={isOpen} close={close} />
         </div>
         <div className="col-md-auto align-middle">
-          <Button variant="tertiary" onClick={() => history.push(`/${slug}`)} iconBefore={AddCircle}>
+          <Button variant="tertiary" onClick={() => history.push(`/create/${slug}/`)} iconBefore={AddCircle}>
             New Classroom
           </Button>
         </div>

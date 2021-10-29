@@ -11,21 +11,23 @@ import { fetchClassroomByUuid } from './classroomSlice';
 import NavigationBar from '../../components/NavigationBar';
 
 const Classroom = (props) => {
+  const dispatch = useDispatch();
   const classroomTitle = useSelector(state => state.classroom.title);
   const classroomId = useSelector(state => state.classroom.classroomId);
-  const dispatch = useDispatch();
+  const slug = useSelector(state => state.enterprise.slug);
 
   useEffect(() => {
-    /* check status of data here. if fetching or empty than send the dispatch */
     /* if the classroomId in the store is different than the one in the params than */
-    /* it's a new classroom . Reload                                                */
-    if (classroomId !== props.classroomId) { dispatch(fetchClassroomByUuid(props.classroomId)); }
+    /* it's a different classroom . Reload                                          */
+    if (classroomId !== props.classroomId) {
+      dispatch(fetchClassroomByUuid(props.classroomId));
+    }
   }, [props.classroomId, classroomId, dispatch]);
 
   return (
     <>
       <ClassroomHeader title={classroomTitle} />
-      <NavigationBar slug={props.slug} />
+      <NavigationBar slug={slug} />
       <Container className="pt-3 pb-3">
         <Row className="d-flex justify-content-between">
           <Col sm={3} md={4} className="flex-shrink-1">
@@ -44,5 +46,4 @@ export default Classroom;
 
 Classroom.propTypes = {
   classroomId: PropTypes.string.isRequired,
-  slug: PropTypes.string.isRequired,
 };

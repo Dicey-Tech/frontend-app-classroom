@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ClassroomApiService from '../../app/services/ClassroomApiService';
 import { fetchCoursesForClassroom } from '../courses/coursesSlice';
 import { fetchStudentsForClassroom } from '../enrollment/enrollmentSlice';
+import { fetchEnterpriseFromUuid } from '../enterprise/enterpriseSlice';
 
 const initialState = {
   title: null,
@@ -9,15 +10,19 @@ const initialState = {
   active: null,
   classroomId: null,
   pending: false,
+  schoolId: null,
+  schoolSlug: null,
   status: 'initial', /* initial,  loading, updating, success, fail */
 };
 
 export const fetchClassroomByUuid = createAsyncThunk('classroom/fetchClassroom', async (classroomId, { dispatch }) => {
-  const response = await ClassroomApiService.fetchClassroomByUuid(classroomId);
-  // fill in data for courses here (dispatch here)?
-  // fill in data for enrollment here (dispatch here)?
   await dispatch(fetchCoursesForClassroom(classroomId));
   await dispatch(fetchStudentsForClassroom(classroomId));
+
+  const response = await ClassroomApiService.fetchClassroomByUuid(classroomId);
+  // get the school slug from the uuid, we need it temporarily for the add classroom button
+  dispatch(fetchEnterpriseFromUuid(response.data.school));
+
   return response.data;
 });
 
@@ -46,6 +51,7 @@ const classroomSlice = createSlice({
         state.active = classroom.active;
         state.classroomId = classroom.uuid;
         state.pending = false;
+        state.schooldId = classroom.school;
         state.status = 'success';
       })
       .addCase(updateClassroomDetails.pending, (state) => {

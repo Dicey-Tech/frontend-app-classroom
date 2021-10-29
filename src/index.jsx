@@ -13,6 +13,7 @@ import store from './app/store';
 import appMessages from './i18n';
 import ClassroomContainer from './containers/ClassroomContainer';
 import NewClassroomContainer from './containers/NewClassroomContainer';
+import ManageClassroomsContainer from './containers/ManageClassroomsContainer';
 import './index.scss';
 
 const App = () => (
@@ -21,8 +22,9 @@ const App = () => (
       <Header />
       <Router basename={getConfig().PUBLIC_PATH.replace(/\/$/, '')}>
         <Switch>
-          <Route path="/:slug/:classroomId/" exact component={ClassroomContainer} />
-          <Route path="/:slug/" exact component={NewClassroomContainer} />
+          <Route path="/create/:slug/" exact component={NewClassroomContainer} />
+          <Route path="/manage/" exact component={ManageClassroomsContainer} />
+          <Route path="/:classroomId/" exact component={ClassroomContainer} />
           <Route render={() => <h1>No such page</h1>} />
         </Switch>
       </Router>

@@ -22,7 +22,7 @@ const NewClassroomContainer = () => {
   async function onClassroomCreated({ title }) {
     try {
       const result = await ClassroomApiService.createNewClassroom({ title, enterpriseUuid });
-      history.push(`/${slug}/${result.data.uuid}`);
+      history.push(`/${result.data.uuid}`);
     } catch {
       alert('an error occured while creating the classroom.');
     }

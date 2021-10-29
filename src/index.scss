@@ -16,3 +16,11 @@
 body {
     background-color: #F8F7F9; //Figma background color
 }
+
+.table-hover {
+    tr {
+        &:hover {
+            cursor: pointer ;
+        }
+    }
+}

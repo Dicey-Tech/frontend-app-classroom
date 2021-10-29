@@ -60,6 +60,11 @@ class ClassroomApiService {
     const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/${uuid}/assignments/`;
     return ClassroomApiService.apiClient().post(requestUrl, formData);
   }
+
+  static async getAllClassrooms() {
+    const requestUrl = `${ClassroomApiService.baseUrl}/api/v1/classrooms/`;
+    return ClassroomApiService.apiClient().get(requestUrl);
+  }
 }
 
 export default ClassroomApiService;

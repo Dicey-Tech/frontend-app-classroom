@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 import LmsApiService from '../../app/services/LmsApiService';
 
 export const fetchEnterpriseFromSlug = createAsyncThunk('enterprise/fetchEnterpriseFromSlug', async (slug) => {
@@ -14,6 +14,19 @@ export const fetchEnterpriseFromSlug = createAsyncThunk('enterprise/fetchEnterpr
       return false;
     }
     return true;
+  },
+});
+
+export const fetchEnterpriseFromUuid = createAsyncThunk('enterprise/fetchEnterpriseFromUuid', async (uuid) => {
+  const result = await LmsApiService.fetchEnterpriseByUuid(uuid);
+  return result.data.results[0];
+},
+{
+  condition: (uuid, { getState }) => {
+    const { enterprise } = getState();
+    const currentUuid = enterprise.uuid;
+    const { status } = enterprise;
+    return !(status === 'loading' || uuid === currentUuid);
   },
 });
 
@@ -38,16 +51,20 @@ const enterpriseSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchEnterpriseFromSlug.pending, (state) => {
-      state.status = 'loading';
-    }).addCase(fetchEnterpriseFromSlug.fulfilled, (state, action) => {
-      const enterpriseInfo = action.payload;
-      state.slug = enterpriseInfo.slug;
-      state.uuid = enterpriseInfo.uuid;
-      state.name = enterpriseInfo.name;
-      state.id = enterpriseInfo.id;
-      state.status = 'loaded';
-    });
+    builder.addMatcher(
+      isAnyOf(fetchEnterpriseFromSlug.pending, fetchEnterpriseFromUuid.pending), (state) => {
+        state.status = 'loading';
+      },
+    ).addMatcher(
+      isAnyOf(fetchEnterpriseFromSlug.fulfilled, fetchEnterpriseFromUuid.fulfilled), (state, action) => {
+        const enterpriseInfo = action.payload;
+        state.slug = enterpriseInfo.slug;
+        state.uuid = enterpriseInfo.uuid;
+        state.name = enterpriseInfo.name;
+        state.id = enterpriseInfo.id;
+        state.status = 'loaded';
+      },
+    );
   },
 });
 
