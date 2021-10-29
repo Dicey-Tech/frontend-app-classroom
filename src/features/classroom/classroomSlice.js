@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ClassroomApiService from '../../app/services/ClassroomApiService';
 import { fetchCoursesForClassroom } from '../courses/coursesSlice';
@@ -15,7 +14,6 @@ const initialState = {
 };
 
 export const fetchClassroomByUuid = createAsyncThunk('classroom/fetchClassroom', async (classroomId, { dispatch }) => {
-  console.log(getAuthenticatedUser(), 'authenticated use');
   await dispatch(fetchCoursesForClassroom(classroomId));
   await dispatch(fetchStudentsForClassroom(classroomId));
 

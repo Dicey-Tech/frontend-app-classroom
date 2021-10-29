@@ -3,16 +3,16 @@ import React from 'react';
 import {
   Card, Image, Button, Container,
 } from '@edx/paragon';
-import configuration from '../config';
+import { getConfig } from '@edx/frontend-platform';
 
-/* TODO replace this with out own layout */
+/* TODO replace this with our own layout */
 const CourseCard = (props) => {
   const openURL = (e, urlToOpen, newTab = false) => {
     e.stopPropagation();
     window.open(urlToOpen, newTab ? '_blank' : '_self');
   };
-  const gradebookURL = `${configuration.GRADEBOOK_URL}/${props.courseId}`;
-  const courseURL = `${configuration.LMS_BASE_URL}/courses/${props.courseId}`;
+  const gradebookURL = `${getConfig().GRADEBOOK_URL}/${props.courseId}`;
+  const courseURL = `${getConfig().LMS_BASE_URL}/courses/${props.courseId}`;
   return (
     <Card className="shadow-sm course-card" onClick={(e) => openURL(e, courseURL, true)}>
       <Card.Body>

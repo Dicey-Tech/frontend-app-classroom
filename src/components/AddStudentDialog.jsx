@@ -24,7 +24,6 @@ const AddStudentDialog = ({ isOpen, close }) => {
         emailsRef.current.value = '';
         close();
       } catch (e) {
-        console.log(e, 'Error!');
         alert('An error occured adding students to the classroom.');
       } finally {
         setIsProcessing(false);
