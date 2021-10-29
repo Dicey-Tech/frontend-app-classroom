@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import {
-  APP_INIT_ERROR, APP_READY, subscribe, initialize, getConfig,
+  APP_INIT_ERROR, APP_READY, subscribe, initialize, getConfig, mergeConfig,
 } from '@edx/frontend-platform';
 import { AppProvider, ErrorPage } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -50,4 +50,12 @@ initialize({
   ],
   requireAuthenticatedUser: true,
   hydrateAuthenticatedUser: true,
+  handlers: {
+    config: () => {
+      mergeConfig({
+        CLASSROOM_BASE_URL: process.env.CLASSROOM_BASE_URL,
+        GRADEBOOK_URL: process.env.GRADEBOOK_URL,
+      }, 'App loadConfig override handler');
+    },
+  },
 });

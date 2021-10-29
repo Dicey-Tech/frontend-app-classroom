@@ -49,17 +49,17 @@ const ManageClassroomsContainer = () => {
                 <table className="table  table-hover">
                   <thead className="thead-light">
                     <tr>
-                        <th scope="col">Classroom</th>
-                        <th scope="col">Status</th>
-                      </tr>
+                      <th scope="col">Classroom</th>
+                      <th scope="col">Status</th>
+                    </tr>
                   </thead>
                   <tbody>
                     {classrooms.results.map((classroom) => (
-                        <tr key={classroom.uuid} onClick={() => classroomClick(classroom.uuid)}>
-                            <td>{classroom.name}</td>
-                            <td>{classroom.active ? 'active' : 'archived'}</td>
-                          </tr>
-                      ))}
+                      <tr key={classroom.uuid} onClick={() => classroomClick(classroom.uuid)}>
+                        <td>{classroom.name}</td>
+                        <td>{classroom.active ? 'active' : 'archived'}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </Col>
