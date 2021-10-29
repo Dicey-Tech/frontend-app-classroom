@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   ModalDialog, Form, Button, ActionRow, Spinner,
 } from '@edx/paragon';
@@ -9,7 +9,7 @@ import ClassroomApiService from '../app/services/ClassroomApiService';
 import { fetchStudentsForClassroom } from '../features/enrollment/enrollmentSlice';
 
 const AddStudentDialog = ({ isOpen, close }) => {
-  const emailsRef = React.createRef();
+  const emailsRef = useRef('');
   const classroomId = useSelector(store => store.classroom.classroomId);
   const dispatch = useDispatch();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -24,12 +24,14 @@ const AddStudentDialog = ({ isOpen, close }) => {
         emailsRef.current.value = '';
         close();
       } catch (e) {
+        console.log(e, 'Error!');
         alert('An error occured adding students to the classroom.');
       } finally {
         setIsProcessing(false);
       }
     }
   };
+
   return (
     <ModalDialog title="Add New Student" isOpen={isOpen} onClose={close} hasCloseButton size="lg">
       <ModalDialog.Header>

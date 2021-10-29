@@ -1,3 +1,4 @@
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ClassroomApiService from '../../app/services/ClassroomApiService';
 import { fetchCoursesForClassroom } from '../courses/coursesSlice';
@@ -6,16 +7,15 @@ import { fetchEnterpriseFromUuid } from '../enterprise/enterpriseSlice';
 
 const initialState = {
   title: null,
-  description: null,
   active: null,
   classroomId: null,
   pending: false,
   schoolId: null,
-  schoolSlug: null,
   status: 'initial', /* initial,  loading, updating, success, fail */
 };
 
 export const fetchClassroomByUuid = createAsyncThunk('classroom/fetchClassroom', async (classroomId, { dispatch }) => {
+  console.log(getAuthenticatedUser(), 'authenticated use');
   await dispatch(fetchCoursesForClassroom(classroomId));
   await dispatch(fetchStudentsForClassroom(classroomId));
 
@@ -47,11 +47,10 @@ const classroomSlice = createSlice({
       .addCase(fetchClassroomByUuid.fulfilled, (state, action) => {
         const classroom = action.payload;
         state.title = classroom.name;
-        state.description = classroom.description;
         state.active = classroom.active;
         state.classroomId = classroom.uuid;
         state.pending = false;
-        state.schooldId = classroom.school;
+        state.schoolId = classroom.school;
         state.status = 'success';
       })
       .addCase(updateClassroomDetails.pending, (state) => {

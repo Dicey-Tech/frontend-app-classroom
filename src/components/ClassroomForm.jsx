@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Form, Container } from '@edx/paragon';
 
 const ClassroomForm = (props) => {
   const { onSuccess, currentTitle } = props; // function which redirects to the proper page.. or re-renders??
-  const titleRef = React.createRef();
-  const formRef = React.createRef();
+  const titleRef = useRef();
+  const formRef = useRef();
   const history = useHistory();
 
   const handleFormSubmit = (event) => {
@@ -14,8 +14,6 @@ const ClassroomForm = (props) => {
     onSuccess({ title: titleRef.current.value }); // need to get the classroomId
   };
   const handleFormReset = () => {
-    // event.preventDefault()
-    // formRef.reset();
     history.goBack();
   };
   return (
@@ -43,7 +41,7 @@ const ClassroomForm = (props) => {
 export default ClassroomForm;
 
 ClassroomForm.defaultProps = {
-  currentTitle: null,
+  currentTitle: '',
 };
 ClassroomForm.propTypes = {
   onSuccess: PropTypes.func.isRequired,

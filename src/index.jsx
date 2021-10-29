@@ -22,7 +22,7 @@ const App = () => (
       <Header />
       <Router basename={getConfig().PUBLIC_PATH.replace(/\/$/, '')}>
         <Switch>
-          <Route path="/create/:slug/" exact component={NewClassroomContainer} />
+          <Route path="/create/" exact component={NewClassroomContainer} />
           <Route path="/manage/" exact component={ManageClassroomsContainer} />
           <Route path="/:classroomId/" exact component={ClassroomContainer} />
           <Route render={() => <h1>No such page</h1>} />

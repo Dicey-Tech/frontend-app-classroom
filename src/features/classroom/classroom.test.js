@@ -5,6 +5,7 @@ const initialState = {
   title: null,
   active: null,
   pending: false,
+  schoolId: null,
   status: 'initial',
 };
 
@@ -14,6 +15,7 @@ const newClassroomState = {
   active: true,
   pending: false,
   classroomId: 1,
+  schoolId: 1,
   status: 'success',
 };
 
@@ -25,6 +27,7 @@ describe('fetch and update existing classroom', () => {
         name: 'a new classroom',
         active: true,
         uuid: 1,
+        school: 1,
         status: 'success',
       },
     })).toEqual(newClassroomState);

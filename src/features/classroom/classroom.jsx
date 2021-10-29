@@ -14,7 +14,6 @@ const Classroom = (props) => {
   const dispatch = useDispatch();
   const classroomTitle = useSelector(state => state.classroom.title);
   const classroomId = useSelector(state => state.classroom.classroomId);
-  const slug = useSelector(state => state.enterprise.slug);
 
   useEffect(() => {
     /* if the classroomId in the store is different than the one in the params than */
@@ -27,7 +26,7 @@ const Classroom = (props) => {
   return (
     <>
       <ClassroomHeader title={classroomTitle} />
-      <NavigationBar slug={slug} />
+      <NavigationBar />
       <Container className="pt-3 pb-3">
         <Row className="d-flex justify-content-between">
           <Col sm={3} md={4} className="flex-shrink-1">

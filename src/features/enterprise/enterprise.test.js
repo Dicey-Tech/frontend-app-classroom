@@ -1,4 +1,4 @@
-import reducer, { fetchEnterpriseFromSlug, clear } from './enterpriseSlice';
+import reducer, { clear } from './enterpriseSlice';
 
 const initialState = {
   slug: null,
@@ -21,7 +21,7 @@ it('has initial state', () => {
 });
 it('fetches enterprise data', () => {
   expect(reducer(initialState, {
-    type: fetchEnterpriseFromSlug.fulfilled,
+    type: 'enterprise/fetchEnterpriseFromSlug/fulfilled',
     payload: resultingState,
   })).toEqual(resultingState);
 });
