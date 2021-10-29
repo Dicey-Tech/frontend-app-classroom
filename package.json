@@ -49,6 +49,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "babel-polyfill": "6.26.0",
     "prop-types": "15.7.2",
+    "query-string-for-all": "^7.0.1",
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-redux": "7.2.4",
