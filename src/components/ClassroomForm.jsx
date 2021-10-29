@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import { Button, Form, Container } from '@edx/paragon';
 
 const ClassroomForm = (props) => {
-  const { onSuccess, currentTitle } = props; // function which redirects to the proper page.. or re-renders??
+  const { onSuccess } = props; // function which redirects to the proper page.. or re-renders??
   const titleRef = useRef();
   const formRef = useRef();
   const history = useHistory();
@@ -22,7 +22,7 @@ const ClassroomForm = (props) => {
         <Form.Row>
           <Form.Group controlId="formClassroomTitle">
             <Form.Label>Classroom Title</Form.Label>
-            <Form.Control placeholder="Enter a title for the Class" ref={titleRef} value={currentTitle} />
+            <Form.Control placeholder="Enter a title for the Class" ref={titleRef} />
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -40,10 +40,6 @@ const ClassroomForm = (props) => {
 
 export default ClassroomForm;
 
-ClassroomForm.defaultProps = {
-  currentTitle: '',
-};
 ClassroomForm.propTypes = {
   onSuccess: PropTypes.func.isRequired,
-  currentTitle: PropTypes.string,
 };
