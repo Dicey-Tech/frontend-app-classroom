@@ -12,7 +12,6 @@ import Footer, { messages as footerMessages } from '@edx/frontend-component-foot
 import store from './app/store';
 import appMessages from './i18n';
 import ClassroomContainer from './containers/ClassroomContainer';
-import NewClassroomContainer from './containers/NewClassroomContainer';
 import ManageClassroomsContainer from './containers/ManageClassroomsContainer';
 import './index.scss';
 
@@ -22,7 +21,6 @@ const App = () => (
       <Header />
       <Router basename={getConfig().PUBLIC_PATH.replace(/\/$/, '')}>
         <Switch>
-          <Route path="/create/" exact component={NewClassroomContainer} />
           <Route path="/manage/" exact component={ManageClassroomsContainer} />
           <Route path="/:classroomId/" exact component={ClassroomContainer} />
           <Route render={() => <h1>No such page</h1>} />
