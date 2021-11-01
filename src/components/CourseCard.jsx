@@ -39,9 +39,13 @@ const CourseCard = (props) => {
 
 export default CourseCard;
 
+CourseCard.defaultProps = {
+  description: '',
+};
+
 CourseCard.propTypes = {
   courseId: PropTypes.string.isRequired,
   imageURL: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
 };

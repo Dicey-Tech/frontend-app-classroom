@@ -17,6 +17,10 @@ const ClassroomHeader = (props) => (
 
 export default ClassroomHeader;
 
+ClassroomHeader.defaultProps = {
+  title: '',
+};
+
 ClassroomHeader.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };

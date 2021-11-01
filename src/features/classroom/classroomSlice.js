@@ -14,8 +14,8 @@ const initialState = {
 };
 
 export const fetchClassroomByUuid = createAsyncThunk('classroom/fetchClassroom', async (classroomId, { dispatch }) => {
-  await dispatch(fetchCoursesForClassroom(classroomId));
-  await dispatch(fetchStudentsForClassroom(classroomId));
+  dispatch(fetchCoursesForClassroom(classroomId));
+  dispatch(fetchStudentsForClassroom(classroomId));
 
   const response = await ClassroomApiService.fetchClassroomByUuid(classroomId);
   // get the school slug from the uuid, we need it temporarily for the add classroom button
