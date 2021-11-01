@@ -1,12 +1,12 @@
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 class UserService {
-  static isOpenEdxAdmin() {
+  static isUserEnterpriseAdmin() {
     const user = getAuthenticatedUser();
     return user.administrator;
   }
 
-  static getEnterpriseUuid() {
+  static getUserEnterpriseAdminUuid() {
     const user = getAuthenticatedUser();
     const adminRole = user.roles.find((element) => element.search(/enterprise_admin/ui) >= 0);
     let uuid = null;
@@ -16,6 +16,10 @@ class UserService {
       /* eslint-enable prefer-destructuring */
     }
     return uuid;
+  }
+
+  static canUserCreateClassroom() {
+    return this.getUserEnterpriseAdminUuid();
   }
 }
 

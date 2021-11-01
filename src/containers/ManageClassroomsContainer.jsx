@@ -37,12 +37,12 @@ const ManageClassroomsContainer = () => {
       {isLoading ? <h1>Loading</h1>
         : (
           <Container className="pt-3 pb-3">
-            {!UserService.isOpenEdxAdmin() && (
-            <Row>
-              <Col>
-                <Button onClick={onCreateClassroomClick}>Create Classroom</Button>
-              </Col>
-            </Row>
+            {UserService.canUserCreateClassroom() && (
+              <Row>
+                <Col>
+                  <Button onClick={onCreateClassroomClick}>Create Classroom</Button>
+                </Col>
+              </Row>
             )}
             <Row className="mt-3">
               <Col>

@@ -6,7 +6,7 @@ import UserService from '../app/services/UserService';
 
 const NewClassroomContainer = () => {
   const history = useHistory();
-  const enterpriseUuid = UserService.getEnterpriseUuid();
+  const enterpriseUuid = UserService.getUserEnterpriseAdminUuid();
 
   async function onClassroomCreated({ title }) {
     try {
