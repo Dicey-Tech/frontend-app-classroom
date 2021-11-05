@@ -9,15 +9,13 @@ const NavigationBar = () => {
   const [isOpen, open, close] = useToggle(false);
 
   return (
-    <Navbar bg="white" expand="lg" className="row justify-content-md-center navbar">
-      <div className="row justify-content-md-center">
-        <div className="col-md-auto">
-          <Button variant="tertiary" onClick={open}>
-            <Image src={AddCourseIcon} style={{ height: 24, width: 24 }} />
-            &nbsp;AddCourse
-          </Button>
-          <AddCourseDialog isOpen={isOpen} close={close} />
-        </div>
+    <Navbar bg="white" expand="lg" className="justify-content-center navbar">
+      <div >
+        <Button variant="tertiary" onClick={open}>
+          <Image src={AddCourseIcon} style={{ height: 24, width: 24 }} />
+          &nbsp;AddCourse
+        </Button>
+        <AddCourseDialog isOpen={isOpen} close={close} />
       </div>
     </Navbar>
   );
