@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCoursesForClassroom } from '../features/courses/coursesSlice';
 import DefaultImageURL from '../assets/GenericCourseImage.svg';
 import ClassroomApiService from '../app/services/ClassroomApiService';
+import './AddCourseDialog.scss';
 
 async function fetchAllCourses(classroomId) {
   const result = await ClassroomApiService.getAvailableCoursesForClassroom(classroomId);
@@ -28,7 +29,7 @@ const AddCourseDialog = ({ isOpen, close }) => {
 
   const [courseList, setCourseList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [courseAdding, setCourseAdding] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -49,29 +50,31 @@ const AddCourseDialog = ({ isOpen, close }) => {
 
   const addCourse = async (courseId) => {
     try {
-      setIsProcessing(true);
+      setCourseAdding(courseId);
       await ClassroomApiService.addCourseToClassroom(classroomId, courseId);
       dispatch(fetchCoursesForClassroom(classroomId));
     } catch (e) {
       alert('An error occured adding the course to the classroom.');
     } finally {
-      setIsProcessing(false);
+      setCourseAdding(null);
     }
   };
 
   const courseListCards = courseList.map((element) => (
-    <Card id={element.courseId} key={element.courseId} style={{ width: '15em' }}>
+    <Card id={element.courseId} key={element.courseId} style={{ width: '15em' }} className="add-course-card">
       <Card.Img variant="top" src={element.imageURL ? element.imageURL : DefaultImageURL} />
       <Card.Body>
         <Card.Title>{element.title}</Card.Title>
         <Card.Text>{element.description}</Card.Text>
+      </Card.Body>
+      <Card.Footer>
         <Button
           variant="primary"
           onClick={() => addCourse(element.courseId)}
-          disabled={isProcessing}
-        >{isProcessing && (<><Spinner animation="border" size="sm" />&nbsp;</>)}Add Course
+          disabled={courseAdding}
+        >{courseAdding === element.courseId && (<><Spinner animation="border" size="sm" />&nbsp;</>)}Add Course
         </Button>
-      </Card.Body>
+      </Card.Footer>
     </Card>
   ));
 
@@ -86,7 +89,7 @@ const AddCourseDialog = ({ isOpen, close }) => {
             {isLoading && (<div className="text-center"><h2>Loading...</h2></div>)}
             {!isLoading && courseListCards.length === 0 && (<div className="text-center"><h2>No courses available</h2></div>)}
             {!isLoading && courseListCards.length > 0 && (
-              <CardGrid columnSizes={{ sm: 10, lg: 4, xl: 4 }} style={{ width: '100%' }}>
+              <CardGrid columnSizes={{ sm: 6, m: 10, lg: 4, xl: 4 }} style={{ width: '100%' }}>
                 {courseListCards}
               </CardGrid>
             )}
