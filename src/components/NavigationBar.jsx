@@ -10,7 +10,7 @@ const NavigationBar = () => {
 
   return (
     <Navbar bg="white" expand="lg" className="justify-content-center navbar">
-      <div >
+      <div>
         <Button variant="tertiary" onClick={open}>
           <Image src={AddCourseIcon} style={{ height: 24, width: 24 }} />
           &nbsp;AddCourse

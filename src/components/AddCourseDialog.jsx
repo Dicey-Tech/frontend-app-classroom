@@ -89,7 +89,12 @@ const AddCourseDialog = ({ isOpen, close }) => {
             {isLoading && (<div className="text-center"><h2>Loading...</h2></div>)}
             {!isLoading && courseListCards.length === 0 && (<div className="text-center"><h2>No courses available</h2></div>)}
             {!isLoading && courseListCards.length > 0 && (
-              <CardGrid columnSizes={{ sm: 6, m: 10, lg: 4, xl: 4 }} style={{ width: '100%' }}>
+              <CardGrid
+                columnSizes={{
+                  sm: 6, m: 10, lg: 4, xl: 4,
+                }}
+                style={{ width: '100%' }}
+              >
                 {courseListCards}
               </CardGrid>
             )}
