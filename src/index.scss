@@ -7,3 +7,20 @@
 
 @import "~@edx/frontend-component-header/dist/index";
 @import "~@edx/frontend-component-footer/dist/footer";
+
+@import './components/classroomheader.scss';
+@import './components/coursecard.scss';
+@import './components/NavigationBar.scss';
+@import './features/classroom/classroom.scss';
+
+body {
+    background-color: #F8F7F9; //Figma background color
+}
+
+.table-hover {
+    tr {
+        &:hover {
+            cursor: pointer ;
+        }
+    }
+}

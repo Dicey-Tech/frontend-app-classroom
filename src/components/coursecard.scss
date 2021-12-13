@@ -1,0 +1,22 @@
+.course-card {
+    overflow: hidden;
+    cursor: pointer;
+    &:hover {
+        background-color: $light;
+        border: solid 1px $gray-300;
+    }
+    .course-image {
+        max-height: 200px;
+        max-width: 200px
+    }
+    .course-description {
+
+    }
+    .course-actions {
+
+    }
+}
+
+.shadow-sm {
+    box-shadow: 4px 4px 7px rgba($black, .15)  !important;
+}
