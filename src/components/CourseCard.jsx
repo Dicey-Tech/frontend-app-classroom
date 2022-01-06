@@ -17,7 +17,7 @@ const CourseCard = (props) => {
 
   const onImageError = () => {
     setSrcImg(DefaultCourseImage);
-  }
+  };
 
   const gradebookURL = `${getConfig().GRADEBOOK_URL}/${props.courseId}`;
   const courseURL = `${getConfig().LMS_BASE_URL}/courses/${props.courseId}`;
