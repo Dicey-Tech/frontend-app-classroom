@@ -1,16 +1,24 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card, Image, Button, Container,
 } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform';
+import DefaultCourseImage from '../assets/defaultcourse.png';
 
 /* TODO replace this with our own layout */
 const CourseCard = (props) => {
+  const [srcImg, setSrcImg] = useState(props.imageURL);
+
   const openURL = (e, urlToOpen, newTab = false) => {
     e.stopPropagation();
     window.open(urlToOpen, newTab ? '_blank' : '_self');
   };
+
+  const onImageError = () => {
+    setSrcImg(DefaultCourseImage);
+  }
+
   const gradebookURL = `${getConfig().GRADEBOOK_URL}/${props.courseId}`;
   const courseURL = `${getConfig().LMS_BASE_URL}/courses/${props.courseId}`;
   return (
@@ -19,7 +27,7 @@ const CourseCard = (props) => {
         <Container className="course-content">
           <div className="d-flex">
             <div>
-              <Image className="course-image" src={props.imageURL} fluid />
+              <Image className="course-image" src={srcImg} fluid onError={onImageError} />
             </div>
             <div className="course-description flex-grow-1 w-100 m-2">
               <h3>{props.title}</h3><br />
